@@ -3,18 +3,19 @@ import aboutImage from "../../../assets/about.webp";
 import Pricing from "@/components/MainLayout/Pricing";
 
 const AboutPage = async () => {
-  return (
-    <>
-      <main className="min-h-screen">
-        <section className="py-16 px-4 text-center bg-indigo-500 text-white">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            About Us
-          </h1>
-          <p className="text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
-            Welcome to Your Marketplace, where buyers find the products they
-            need, and sellers create opportunities.
-          </p>
-        </section>
+return (
+<>
+
+<main className="min-h-screen">
+<section className="py-16 px-4 text-center bg-indigo-500 text-white">
+<h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+About Us
+</h1>
+<p className="text-base sm:text-lg lg:text-xl max-w-2xl mx-auto">
+Welcome to Your Marketplace, where buyers find the products they
+need, and sellers create opportunities.
+</p>
+</section>
 
         {/* About Us & Mission Section */}
         <section className="py-12 px-4">
@@ -65,7 +66,8 @@ const AboutPage = async () => {
         </div>
       </main>
     </>
-  );
+
+);
 };
 
 export default AboutPage;
