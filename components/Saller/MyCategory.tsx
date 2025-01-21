@@ -7,7 +7,6 @@ import {
 import { useGeatAllCategory } from "@/hooks/category.hooks";
 import { TCategory } from "@/types";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
 type TSelectCategory = { name: string; status: string }[];
 
