@@ -190,7 +190,7 @@ const Navbar = ({ category }: { category: TCategory[] }) => {
             Dashboard
           </button>
         ) : (
-          <Link href={"/about-us"}>
+          <Link href={"/signup"}>
             <button className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm">
               Be a Seller
             </button>
@@ -284,6 +284,16 @@ const Navbar = ({ category }: { category: TCategory[] }) => {
             ref={scrollRef}
             className="flex overflow-x-auto gap-3 scrollbar-hide px-2"
           >
+            <div
+              onClick={() => handleCategoryClick("")}
+              className={`flex-shrink-0 px-2 md:px-4 py-1 md:py-2 rounded md:rounded-md text-xs sm:text-sm font-medium cursor-pointer ${
+                selectedCategory === ""
+                  ? "bg-purple-600 text-white"
+                  : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+              }`}
+            >
+              All
+            </div>
             {category?.map((cat) => (
               <div
                 key={cat?._id}

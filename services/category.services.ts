@@ -34,15 +34,15 @@ export const deleteCategory = async (id: string) => {
   }
 };
 
-export const getCategorys = async () => {
-  try {
-    const res = await fetch("http://localhost:5000/api/v1/category", {
-      next: {
-        tags: ["category"],
-      },
-    });
-    return res.json();
-  } catch (err: any) {
-    return err?.response?.data;
-  }
-};
+// export const getCategorys = async () => {
+//   try {
+//     const res = await fetch("http://localhost:5000/api/v1/category", {
+//       next: {
+//         tags: ["category"],
+//       },
+//     });
+//     return res.json();
+//   } catch (err: any) {
+//     return err?.response?.data;
+//   }
+// };

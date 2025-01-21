@@ -139,3 +139,12 @@ export const getDeadlineComingSallers = async () => {
     return err?.response?.data;
   }
 };
+
+export const logoutUser = async () => {
+  try {
+    cookies().delete("accessToken");
+    cookies().delete("refreshToken");
+  } catch (err: any) {
+    return err;
+  }
+};
