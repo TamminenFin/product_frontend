@@ -4,7 +4,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["localhost", "via.placeholder.com", "res.cloudinary.com"],
+    domains: ["res.cloudinary.com"],
   },
   typescript: {
     ignoreBuildErrors: true,
