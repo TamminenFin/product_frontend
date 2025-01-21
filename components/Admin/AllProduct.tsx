@@ -183,7 +183,10 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
         return (
           <div className="isolate flex -space-x-px">
             <Link href={`/dashboard/product/edit/${row.original?._id}`}>
-              <Button variant="outline" className="rounded-r-none focus:z-10">
+              <Button
+                variant="outline"
+                className="rounded-r-none text-black focus:z-10"
+              >
                 <Edit />
               </Button>
             </Link>
@@ -195,7 +198,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
                 })
               }
               variant="outline"
-              className="rounded-l-none focus:z-10"
+              className="text-black rounded-l-none focus:z-10"
             >
               <Trash />
             </Button>
@@ -332,21 +335,30 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
           </TableHeader>
           <TableBody>
             {table?.getRowModel()?.rows?.length ? (
-              table?.getRowModel()?.rows?.map((row) => (
-                <TableRow
-                  key={row?.id}
-                  data-state={row?.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells()?.map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table?.getRowModel()?.rows?.map((row) => {
+                const isCategoryEmpty = row?.original?.category?.length === 0;
+
+                return (
+                  <TableRow
+                    key={row?.id}
+                    data-state={row?.getIsSelected() && "selected"}
+                    className={
+                      isCategoryEmpty
+                        ? "bg-red-500 text-white hover:bg-red-500"
+                        : ""
+                    }
+                  >
+                    {row.getVisibleCells()?.map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

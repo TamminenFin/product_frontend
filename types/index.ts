@@ -32,7 +32,7 @@ export type TProduct = {
   _id: string;
   name: string;
   price: number;
-  category: [{ name: string }];
+  category: [{ name: string }] | [];
   location: string;
   description: string;
   image: string;

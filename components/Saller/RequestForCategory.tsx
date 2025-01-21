@@ -1,6 +1,7 @@
+// RequestForCategory Component
 "use client";
 
-import { useGetCurrentSaller, useSendRequest } from "@/hooks/auth.hooks";
+import { useSendRequest } from "@/hooks/auth.hooks";
 import { useGeatAllCategory } from "@/hooks/category.hooks";
 import { TCategory } from "@/types";
 import { Loader, Loader2 } from "lucide-react";
@@ -12,27 +13,16 @@ type TSelectCategory = { name: string; status: string }[];
 
 const RequestForCategory = () => {
   const { data, isLoading } = useGeatAllCategory();
-  const { data: sallerData, isLoading: sallerLoading } = useGetCurrentSaller();
   const [selectCategory, setSelectCategory] = useState<TSelectCategory>([]);
   const { mutate: addCategory, isPending } = useSendRequest();
   const router = useRouter();
 
   const handleSelect = (name: string) => {
-    const categoryLimit = sallerData?.data?.categoryLimit || 5; // Default to 5 if not defined
-
     setSelectCategory((prev) => {
       if (prev.some((category) => category.name === name)) {
-        // Remove the category if it's already selected
         return prev.filter((category) => category.name !== name);
       }
-
-      if (prev.length >= categoryLimit) {
-        toast.error(`You can select only ${categoryLimit} categories!`);
-        return prev; // Return the unchanged selection if limit is exceeded
-      }
-
-      // Add the new category
-      return [...prev, { name, status: "Pending" }];
+      return [...prev, { name, status: "Active" }];
     });
   };
 
@@ -43,13 +33,16 @@ const RequestForCategory = () => {
     addCategory(selectCategory, {
       onSuccess: (data) => {
         if (data?.success) {
+          toast.success("Request sent successfully!");
           router.push("/");
         }
       },
     });
   };
 
-  if (isLoading || sallerLoading) {
+  const totalCost = selectCategory.length * 10;
+
+  if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
         <Loader2 size={30} />
@@ -59,12 +52,21 @@ const RequestForCategory = () => {
 
   return (
     <div>
+      {/* Dynamic Cost Message */}
+      <div className="text-center mb-6">
+        <p className="text-lg font-medium">
+          {selectCategory.length > 0
+            ? `You have selected ${selectCategory.length} category(ies). Total cost: $${totalCost}/month.`
+            : "Select categories to see the total cost."}
+        </p>
+      </div>
+
       {/* Category List */}
       <div className="flex items-center justify-center flex-wrap gap-3">
         {data?.data?.map((category: TCategory) => (
           <div
             key={category?._id}
-            className={`text-xs md:text-base font-medium cursor-pointer rounded-full ${
+            className={`text-xs md:text-base font-medium cursor-pointer rounded-full transition-colors ${
               isSelected(category?.name)
                 ? "bg-blue-600 text-white py-[6px] px-[14px]"
                 : "border-2 border-blue-600 py-1 px-3"

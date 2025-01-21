@@ -53,7 +53,7 @@ const EditProduct = ({ id }: { id: string }) => {
     }
     formData.append(
       "data",
-      JSON.stringify({ name, price, location, category, description })
+      JSON.stringify({ name, price, category, description })
     );
 
     const payload = { formData, id };
@@ -65,9 +65,8 @@ const EditProduct = ({ id }: { id: string }) => {
           route.push("/dashboard/product");
         }
       },
-      onError: () => {
+      onSettled: () => {
         toast.dismiss(loadingToast);
-        toast.error("Failed to update the product");
       },
     });
   };

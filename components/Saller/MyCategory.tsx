@@ -29,12 +29,6 @@ const MyCategory = () => {
       if (prev.some((category) => category.name === name)) {
         return prev.filter((category) => category.name !== name);
       }
-      if (selectCategory.length >= sallerInfo?.data?.categoryLimit) {
-        toast.error(
-          `You have ${sallerInfo?.data?.categoryLimit} category limit !`
-        );
-        return selectCategory;
-      }
       return [...prev, { name, status: "Pending" }];
     });
   };

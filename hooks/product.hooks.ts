@@ -50,7 +50,11 @@ export const useUpdateProduct = () => {
       return await updateProduct(formData, id);
     },
     onSuccess: (data) => {
-      toast.success(data?.message);
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
     },
     onError: (error: any) => {
       toast.error(error?.message);

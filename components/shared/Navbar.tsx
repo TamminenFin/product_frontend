@@ -22,10 +22,12 @@ import Link from "next/link";
 import { useGetCurrentSaller } from "@/hooks/auth.hooks";
 import PendingUserModel from "../model/PendingUserModel";
 import SubscriptionEndMessage from "../model/SubscriptionEndMessage";
+import { useGeatAllCategory } from "@/hooks/category.hooks";
 
-const Navbar = ({ category }: { category: TCategory[] }) => {
+const Navbar = () => {
   const { user } = useUser();
   const { data: userInfo } = useGetCurrentSaller();
+  const { data: category, isLoading } = useGeatAllCategory();
   const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,7 +70,7 @@ const Navbar = ({ category }: { category: TCategory[] }) => {
     router.push(`?${params.toString()}`);
   };
 
-  console.log(userInfo);
+  console.log(category);
 
   const handleNavigate = () => {
     if (userInfo?.data?.status === "Pending") {
@@ -88,14 +90,20 @@ const Navbar = ({ category }: { category: TCategory[] }) => {
 
     if (value) {
       setSearchResults(
-        category
-          .map((cat) => cat.name)
-          .filter((name) => name.toLowerCase().includes(value.toLowerCase()))
+        category?.data
+          ?.map((cat: TCategory) => cat.name)
+          .filter((name: string) =>
+            name.toLowerCase().includes(value.toLowerCase())
+          )
       );
     } else {
       setSearchResults([]);
     }
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <nav className="w-full bg-white dark:bg-gray-900 shadow-md py-4">
@@ -294,7 +302,7 @@ const Navbar = ({ category }: { category: TCategory[] }) => {
             >
               All
             </div>
-            {category?.map((cat) => (
+            {category?.data?.map((cat: TCategory) => (
               <div
                 key={cat?._id}
                 onClick={() => handleCategoryClick(cat.name)}

@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@/lib/user.provider";
 import { logoutUser } from "@/services/auth.services";
 import { Users } from "lucide-react";
 import Link from "next/link";
@@ -11,10 +12,12 @@ import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { TiStopwatch } from "react-icons/ti";
 
 const Navlinks = () => {
+  const { setIsLoading } = useUser();
   const pathname = usePathname();
   const route = useRouter();
   const handleLogOut = async () => {
     await logoutUser();
+    setIsLoading(true);
     route.push("/");
   };
 

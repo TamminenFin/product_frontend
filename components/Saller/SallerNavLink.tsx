@@ -1,4 +1,5 @@
 "use client";
+import { useUser } from "@/lib/user.provider";
 import { logoutUser } from "@/services/auth.services";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -7,10 +8,12 @@ import { BiLogoProductHunt } from "react-icons/bi";
 import { MdCategory, MdDashboard, MdOutlineLogout } from "react-icons/md";
 
 const SallerNavLink = () => {
+  const { setIsLoading } = useUser();
   const pathname = usePathname();
   const route = useRouter();
   const handleLogOut = async () => {
     await logoutUser();
+    setIsLoading(true);
     route.push("/");
   };
 
