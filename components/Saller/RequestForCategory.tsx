@@ -30,8 +30,10 @@ const RequestForCategory = () => {
     selectCategory.some((category) => category.name === name);
 
   const handleNext = () => {
+    console.log(selectCategory);
     addCategory(selectCategory, {
       onSuccess: (data) => {
+        console.log(data);
         if (data?.success) {
           toast.success("Request sent successfully!");
           router.push("/");
@@ -45,7 +47,7 @@ const RequestForCategory = () => {
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <Loader2 size={30} />
+        <Loader2 className="animate-spin" size={30} />
       </div>
     );
   }
@@ -56,26 +58,28 @@ const RequestForCategory = () => {
       <div className="text-center mb-6">
         <p className="text-lg font-medium">
           {selectCategory.length > 0
-            ? `You have selected ${selectCategory.length} category(ies). Total cost: $${totalCost}/month.`
+            ? `You have selected ${selectCategory.length} category(ies). Total cost: S/‎${totalCost}/month.`
             : "Select categories to see the total cost."}
         </p>
       </div>
 
       {/* Category List */}
       <div className="flex items-center justify-center flex-wrap gap-3">
-        {data?.data?.map((category: TCategory) => (
-          <div
-            key={category?._id}
-            className={`text-xs md:text-base font-medium cursor-pointer rounded-full transition-colors ${
-              isSelected(category?.name)
-                ? "bg-blue-600 text-white py-[6px] px-[14px]"
-                : "border-2 border-blue-600 py-1 px-3"
-            }`}
-            onClick={() => handleSelect(category?.name)}
-          >
-            {category?.name}
-          </div>
-        ))}
+        {data?.data
+          ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+          ?.map((category: TCategory) => (
+            <div
+              key={category?._id}
+              className={`text-xs md:text-base font-medium cursor-pointer rounded-full transition-colors ${
+                isSelected(category?.name)
+                  ? "bg-blue-600 text-white py-[6px] px-[14px]"
+                  : "border-2 border-blue-600 py-1 px-3"
+              }`}
+              onClick={() => handleSelect(category?.name)}
+            >
+              {category?.name}
+            </div>
+          ))}
       </div>
 
       {/* Submit Button */}

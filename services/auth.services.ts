@@ -8,8 +8,18 @@ export const createUser = async (userData: TCreateUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signup", userData);
     if (data?.success) {
-      cookies().set("accessToken", data?.data?.accessToken);
-      cookies().set("refreshToken", data?.data?.refreshToken);
+      cookies().set("accessToken", data?.data?.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 300,
+      });
+      cookies().set("refreshToken", data?.data?.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 365 * 24 * 60 * 60 * 1000,
+      });
     }
     return data;
   } catch (err: any) {
@@ -48,8 +58,18 @@ export const signInUser = async (payload: TSignInUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signin", payload);
     if (data?.success) {
-      cookies().set("accessToken", data?.data?.accessToken);
-      cookies().set("refreshToken", data?.data?.refreshToken);
+      cookies().set("accessToken", data?.data?.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 300,
+      });
+      cookies().set("refreshToken", data?.data?.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 365 * 24 * 60 * 60 * 1000,
+      });
     }
     return data;
   } catch (err: any) {
@@ -134,6 +154,20 @@ export const getAllRequestForSallers = async () => {
 export const getDeadlineComingSallers = async () => {
   try {
     const { data } = await axiosInstance.get(`/auth/saller/deadline-comming`);
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const addTransactionId = async (payload: {
+  sallerId: string;
+  transactionId: string;
+}) => {
+  try {
+    const { data } = await axiosInstance.put(`/auth/saller/add-transactionId`, {
+      payload,
+    });
     return data;
   } catch (err: any) {
     return err?.response?.data;

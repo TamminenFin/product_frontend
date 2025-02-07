@@ -75,21 +75,23 @@ const Category = () => {
       </div>
       <Separator className="my-4" />
       <div className="flex items-center flex-wrap justify-center gap-4">
-        {data?.data?.map((category: TCategory) => (
-          <div
-            key={category?._id}
-            className="flex gap-1 items-center bg-blue-600 px-4 py-1.5 rounded-full text-white"
-          >
-            <h1 className="text-lg">{category?.name}</h1>
-            <button
-              onClick={() =>
-                hadleModelOpen({ name: category.name, _id: category?._id })
-              }
+        {data?.data
+          ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+          ?.map((category: TCategory) => (
+            <div
+              key={category?._id}
+              className="flex gap-1 items-center bg-blue-600 px-4 py-1.5 rounded-full text-white"
             >
-              <X size={16} className="text-red-600" />
-            </button>
-          </div>
-        ))}
+              <h1 className="text-lg">{category?.name}</h1>
+              <button
+                onClick={() =>
+                  hadleModelOpen({ name: category.name, _id: category?._id })
+                }
+              >
+                <X size={16} className="text-red-600" />
+              </button>
+            </div>
+          ))}
       </div>
       <CreateCategoryModel
         isOpen={isOpen}

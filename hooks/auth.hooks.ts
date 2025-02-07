@@ -1,6 +1,7 @@
 import {
   acceptRequest,
   addCategoryToSaller,
+  addTransactionId,
   createUser,
   getAllRequestForSallers,
   getAllSallers,
@@ -90,6 +91,22 @@ export const useAcceptRequest = () => {
     },
     onError: (error) => {
       toast.error(error?.message);
+    },
+  });
+};
+export const useAddTransactionId = () => {
+  return useMutation({
+    mutationKey: ["TransactionId"],
+    mutationFn: async (payload: { sallerId: string; transactionId: string }) =>
+      await addTransactionId(payload),
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message, {
+          className: "bg-red-600",
+        });
+      }
     },
   });
 };

@@ -14,13 +14,14 @@ export default function Product() {
   const searchParams = useSearchParams();
 
   const selectedCategory = searchParams.get("category");
-  const selectedLocation = searchParams.get("location");
+  const selectedLocation = searchParams.getAll("location[]") || [];
+  const searchTerms = searchParams.get("searchTerms");
 
   const fetchProducts = async ({ pageParam }: { pageParam: number }) => {
     const res = await fetch(
-      `http://localhost:5000/api/v1/product?page=${pageParam}&limit=3&location=${
+      `https://product-serch-server.vercel.app/api/v1/product?page=${pageParam}&limit=3&location=${
         selectedLocation || ""
-      }&category=${selectedCategory || ""}`
+      }&category=${selectedCategory || ""}&searchTerms=${searchTerms || ""}`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch products");
@@ -37,7 +38,7 @@ export default function Product() {
     isFetchingNextPage,
     hasNextPage,
   } = useInfiniteQuery({
-    queryKey: ["products", selectedCategory, selectedLocation],
+    queryKey: ["products", selectedCategory, selectedLocation, searchTerms],
     queryFn: fetchProducts,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

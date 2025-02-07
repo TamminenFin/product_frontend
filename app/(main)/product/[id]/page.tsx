@@ -33,7 +33,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="text-xl sm:text-2xl font-semibold text-gray-800 mt-4">
-            ${data?.data?.price}
+            S/‎{data?.data?.price}
           </div>
 
           <div className="mt-6 space-y-4">
@@ -51,6 +51,16 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
               </span>
               <span className="text-gray-700">
                 {data?.data?.sallerId?.shopName}
+              </span>
+            </div>
+          </div>
+          <div className="mt-3 space-y-4">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm sm:text-base text-gray-500">
+                Phone Number:
+              </span>
+              <span className="text-gray-700">
+                {data?.data?.sallerId?.phone}
               </span>
             </div>
           </div>

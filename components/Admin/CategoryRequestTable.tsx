@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Trash } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { PiSlidersHorizontal } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,7 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useDeleteProduct, useGetAllProduct } from "@/hooks/product.hooks";
 import { Input } from "../ui/input";
 import Link from "next/link";
 import {
@@ -32,86 +31,26 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { TProduct } from "@/types";
-import DeleteConfirmationModal from "../model/DeleteConfirmationModal";
-import Image from "next/image";
+import { TUser } from "@/types";
+import { useGetAllCategoryRequest } from "@/hooks/category.hooks";
 
-type SelectedItemType = { name: string; _id: string } | null;
+type TRequest = {
+  name: string;
+  productCount: number;
+  sallerId: TUser;
+  email: string;
+  _id?: string;
+  createdAt: string;
+};
 
-function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
-  const { data, isLoading, refetch } = useGetAllProduct();
+function CategoryRequestTable() {
+  const { data, isLoading } = useGetAllCategoryRequest();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelctedItem] = useState<SelectedItemType>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const { mutate: deleteProduct } = useDeleteProduct();
 
-  const handleDelete = () => {
-    if (selectedItem) {
-      deleteProduct(selectedItem?._id, {
-        onSuccess: () => {
-          refetch();
-          setIsOpen(false);
-        },
-      });
-    }
-  };
-
-  const handleModelOpen = (item: { name: string; _id: string }) => {
-    setSelctedItem(item);
-    setIsOpen(true);
-  };
-
-  const columns: ColumnDef<TProduct>[] = [
-    {
-      accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="ml-3">{row.getValue("name")}</div>,
-    },
-    {
-      accessorKey: "image",
-      header: ({}) => {
-        return <p>Image</p>;
-      },
-      cell: ({ row }) => (
-        <div className="ml-3">
-          <Image
-            src={row.getValue("image")}
-            width={50}
-            height={50}
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-        </div>
-      ),
-    },
-    {
-      accessorKey: "location",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Location
-            <ArrowUpDown />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className="ml-3">{row.getValue("location")}</div>,
-    },
+  const columns: ColumnDef<TRequest>[] = [
     {
       accessorKey: "category",
       header: ({ column }) => {
@@ -120,33 +59,44 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Category
+            category
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="ml-3">
-          {row?.original?.category?.map((cat, idx) => (
-            <p key={idx}>{cat.name},</p>
-          ))}
-        </div>
-      ),
+      cell: ({ row }) => <div className="ml-3">{row.original.name}</div>,
     },
     {
-      accessorKey: "price",
+      accessorKey: "Saller Email",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            price
+            Saller Email
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => <div className="ml-3">{row.getValue("price")}</div>,
+      cell: ({ row }) => <div className="ml-3">{row.original.email}</div>,
+    },
+    {
+      accessorKey: "Have Product",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Have Product
+            <ArrowUpDown />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="ml-3">{row.original.productCount}</div>
+      ),
     },
     {
       accessorKey: "Created At",
@@ -162,64 +112,10 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
         );
       },
       cell: ({ row }) => (
-        <div className="ml-3">{row.original.createdAt.slice(0, 10)}</div>
+        <div className="ml-3">{row.original?.createdAt?.slice(0, 10)}</div>
       ),
     },
   ];
-
-  if (!isAdmin) {
-    columns.push({
-      id: "actions",
-      header: "Action",
-      enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <div className="isolate flex -space-x-px">
-            <Link href={`/dashboard/product/edit/${row.original?._id}`}>
-              <Button
-                variant="outline"
-                className="rounded-r-none text-black focus:z-10"
-              >
-                <Edit />
-              </Button>
-            </Link>
-            <Button
-              onClick={() =>
-                handleModelOpen({
-                  name: row.original?.name,
-                  _id: row?.original?._id,
-                })
-              }
-              variant="outline"
-              className="text-black rounded-l-none focus:z-10"
-            >
-              <Trash />
-            </Button>
-          </div>
-        );
-      },
-    });
-  }
-
-  if (isAdmin) {
-    columns.push({
-      accessorKey: "Saller Name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Saller Name
-            <ArrowUpDown />
-          </Button>
-        );
-      },
-      cell: ({ row }) => (
-        <div className="ml-3">{row.original?.sallerId?.name}</div>
-      ),
-    });
-  }
 
   const table = useReactTable({
     data: data?.data || [],
@@ -246,24 +142,24 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Products</h1>
+      <h1 className="text-2xl font-semibold">Request for Category</h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
         <Input
-          placeholder="Filter Product..."
-          value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter Category..."
+          value={
+            (table?.getColumn("category")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table?.getColumn("name")?.setFilterValue(event.target.value)
+            table?.getColumn("category")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
         <div className="flex items-center flex-row-reverse md:flex-row justify-between md:justify-start gap-2 mt-4 md:mt-0">
-          {!isAdmin && (
-            <Link href="/dashboard/product/add">
-              <button className="text-sm bg-red py-2 rounded px-5 bg-blue-600 text-white ">
-                Add Product
-              </button>
-            </Link>
-          )}
+          <Link href="/admin/categories">
+            <button className="text-sm bg-red py-2 rounded px-5 bg-blue-600 text-white ">
+              Add Category
+            </button>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
@@ -315,17 +211,10 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
           <TableBody>
             {table?.getRowModel()?.rows?.length ? (
               table?.getRowModel()?.rows?.map((row) => {
-                const isCategoryEmpty = row?.original?.category?.length === 0;
-
                 return (
                   <TableRow
                     key={row?.id}
                     data-state={row?.getIsSelected() && "selected"}
-                    className={
-                      isCategoryEmpty
-                        ? "bg-red-500 text-white hover:bg-red-500"
-                        : ""
-                    }
                   >
                     {row.getVisibleCells()?.map((cell) => (
                       <TableCell key={cell.id}>
@@ -375,14 +264,8 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
           </Button>
         </div>
       </div>
-      <DeleteConfirmationModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        handleDelete={handleDelete}
-        itemName={selectedItem?.name || ""}
-      />
     </div>
   );
 }
 
-export default AllProduct;
+export default CategoryRequestTable;

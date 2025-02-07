@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Plus } from "lucide-react";
 import { PiSlidersHorizontal } from "react-icons/pi";
 
 import { Button } from "@/components/ui/button";
@@ -31,24 +31,18 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useGetSubscriptionSaller } from "@/hooks/auth.hooks";
+import AddTransactionIdModal from "../model/AddTransactionIdModal";
 import { TSaller } from "@/types";
-import {
-  useGetSubscriptionSaller,
-  useSendDeadlineEmail,
-} from "@/hooks/auth.hooks";
-import { MdEmail } from "react-icons/md";
 
 function SubscriptionDeadline() {
-  const { mutate: sendEmail, isPending } = useSendDeadlineEmail();
-  const { data, isLoading } = useGetSubscriptionSaller();
+  const [isOpen, setIsOpen] = useState(false);
+  const { data, isLoading, refetch } = useGetSubscriptionSaller();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-
-  const handleSendEmail = (id: string) => {
-    sendEmail({ sallerId: id });
-  };
+  const [selectedUserId, setSelectedUserId] = useState("");
 
   const columns: ColumnDef<TSaller>[] = [
     {
@@ -140,19 +134,23 @@ function SubscriptionDeadline() {
     },
 
     {
-      id: "actions",
-      header: "Action",
+      id: "Transaction Id",
+      header: "Transaction Id",
       enableHiding: false,
       cell: ({ row }) => {
-        return (
+        return row.original.transactionId ? (
+          row.original.transactionId
+        ) : (
           <div className="isolate flex -space-x-px">
             <Button
-              onClick={() => handleSendEmail(row.original._id)}
+              onClick={() => {
+                setIsOpen(true);
+                setSelectedUserId(row.original._id);
+              }}
               variant="outline"
               className="rounded-r-none focus:z-10"
-              disabled={isPending}
             >
-              <MdEmail />
+              <Plus /> Trans Id
             </Button>
           </div>
         );
@@ -298,6 +296,12 @@ function SubscriptionDeadline() {
           </Button>
         </div>
       </div>
+      <AddTransactionIdModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        refetch={refetch}
+        id={selectedUserId}
+      />
     </div>
   );
 }

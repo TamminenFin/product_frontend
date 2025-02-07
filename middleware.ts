@@ -9,6 +9,7 @@ const userRoutes = [
   "/dashboard/product",
   "/dashboard/product/add",
   "/dashboard/my-category",
+  "/dashboard/category-request",
 ];
 
 const dynamicUserRoutes = [

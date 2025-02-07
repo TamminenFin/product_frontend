@@ -15,7 +15,25 @@ import {
   Loader,
   LucideProps,
   Phone,
+  Info,
 } from "lucide-react";
+import { ScrollArea } from "../ui/scroll-area";
+import { Citys } from "@/types/Citys";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 const SignUpForm = () => {
   const { mutate: createUser, isPending } = useUserRegistation();
@@ -137,7 +155,28 @@ const SignUpForm = () => {
       <div className="flex items-center gap-3 w-full">
         <div className="w-full">
           <Label>City</Label>
-          <Input name="city" type="text" required placeholder="City" />
+          <Select name="city" required>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a City" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>City</SelectLabel>
+                <ScrollArea className="h-52">
+                  {Citys.sort((a, b) => a.city.localeCompare(b.city)).map(
+                    (location, index) => (
+                      <SelectItem
+                        key={`${location} ${index}`}
+                        value={location.city}
+                      >
+                        {location.city}
+                      </SelectItem>
+                    )
+                  )}
+                </ScrollArea>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="w-full">
           <Label>Postal Code</Label>
@@ -155,12 +194,34 @@ const SignUpForm = () => {
       />
 
       {/* Shop ID Input */}
-      <InputField
-        label="Shop ID (Optional)"
-        id="shopId"
-        placeholder="Shop ID (optional)"
-        icon={Tag}
-      />
+
+      <div className="relative">
+        <div className="flex items-center gap-3">
+          <Label htmlFor="shopId" className="text-gray-700 dark:text-gray-300">
+            Shop ID (Optional)
+          </Label>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="h-4 w-4 text-muted-foreground cursor-pointer" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>This is your unique shop identifier, if available.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        <div className="relative mt-1.5">
+          <Tag className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Input
+            type={"text"}
+            id="shopId"
+            name="shopId"
+            placeholder="Shop ID (optional)"
+            className="pl-10"
+          />
+        </div>
+      </div>
 
       {/* Submit Button */}
       <button

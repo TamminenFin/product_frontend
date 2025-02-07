@@ -44,6 +44,10 @@ function AllSallers() {
   const [rowSelection, setRowSelection] = useState({});
   const [selectedId, setSelectedId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dates, setDates] = useState<{
+    startDate: string;
+    endDate: string;
+  } | null>(null);
 
   const columns: ColumnDef<TSaller>[] = [
     {
@@ -175,6 +179,10 @@ function AllSallers() {
                 onClick={() => {
                   setIsModalOpen(true);
                   setSelectedId(row.original?._id);
+                  setDates({
+                    startDate: row.original.subStartDate as unknown as string,
+                    endDate: row.original.subEndDate as unknown as string,
+                  });
                 }}
                 variant="outline"
                 className="rounded-r-none focus:z-10"
@@ -326,12 +334,15 @@ function AllSallers() {
           </Button>
         </div>
       </div>
-      <SubscriptionModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        sallerId={selectedId}
-        refetch={refetch}
-      />
+      {dates && (
+        <SubscriptionModal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          sallerId={selectedId}
+          refetch={refetch}
+          dates={dates}
+        />
+      )}
     </div>
   );
 }

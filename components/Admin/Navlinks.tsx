@@ -1,4 +1,3 @@
-"use client";
 import { useUser } from "@/lib/user.provider";
 import { logoutUser } from "@/services/auth.services";
 import { Users } from "lucide-react";
@@ -6,15 +5,15 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { BiCategory, BiLogoProductHunt } from "react-icons/bi";
-import { FaHistory } from "react-icons/fa";
 import { MdDashboard, MdOutlineLogout } from "react-icons/md";
-import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { TiStopwatch } from "react-icons/ti";
+import { FaCodePullRequest } from "react-icons/fa6";
 
-const Navlinks = () => {
+const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
   const { setIsLoading } = useUser();
   const pathname = usePathname();
   const route = useRouter();
+
   const handleLogOut = async () => {
     await logoutUser();
     setIsLoading(true);
@@ -25,8 +24,9 @@ const Navlinks = () => {
     pathname === path
       ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-50"
       : "text-gray-700 dark:text-gray-400";
+
   return (
-    <nav className="flex h-[calc(100vh-95px)] flex-col justify-between">
+    <nav className="flex  h-[70vh] md:h-[calc(100vh-95px)] flex-col justify-between">
       <div className="space-y-1">
         <Link
           href="/admin"
@@ -34,6 +34,7 @@ const Navlinks = () => {
             "/admin"
           )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
           prefetch={false}
+          onClick={onLinkClick}
         >
           <MdDashboard className="h-5 w-5" />
           Dashboard
@@ -44,6 +45,7 @@ const Navlinks = () => {
             "/admin/categories"
           )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
           prefetch={false}
+          onClick={onLinkClick}
         >
           <BiCategory className="h-5 w-5" />
           Categories
@@ -54,6 +56,7 @@ const Navlinks = () => {
             "/admin/sallers"
           )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
           prefetch={false}
+          onClick={onLinkClick}
         >
           <Users className="h-5 w-5" />
           Sallers
@@ -64,29 +67,10 @@ const Navlinks = () => {
             "/admin/products"
           )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
           prefetch={false}
+          onClick={onLinkClick}
         >
           <BiLogoProductHunt className="h-5 w-5" />
           Products
-        </Link>
-        <Link
-          href="/admin/request-saller"
-          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
-            "/admin/request-saller"
-          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
-          prefetch={false}
-        >
-          <FaHistory className="h-5 w-5" />
-          Pending Requests
-        </Link>
-        <Link
-          href="/admin/pricing"
-          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
-            "/admin/pricing"
-          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
-          prefetch={false}
-        >
-          <RiMoneyDollarBoxLine className="h-5 w-5" />
-          Pricing
         </Link>
         <Link
           href="/admin/subscription-check"
@@ -94,14 +78,29 @@ const Navlinks = () => {
             "/admin/subscription-check"
           )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
           prefetch={false}
+          onClick={onLinkClick}
         >
           <TiStopwatch className="h-5 w-5" />
           Subscription-Check
         </Link>
+        <Link
+          href="/admin/request"
+          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
+            "/admin/request"
+          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
+          prefetch={false}
+          onClick={onLinkClick}
+        >
+          <FaCodePullRequest className="h-5 w-5" />
+          Requests
+        </Link>
       </div>
       <button
-        onClick={handleLogOut}
-        className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium  hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
+        onClick={() => {
+          handleLogOut();
+          onLinkClick();
+        }}
+        className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
       >
         <MdOutlineLogout className="h-5 w-5" />
         Logout

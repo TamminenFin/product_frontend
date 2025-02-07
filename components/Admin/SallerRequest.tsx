@@ -43,88 +43,89 @@ function SallerRequest() {
   const [rowSelection, setRowSelection] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState("");
+  const [dates, setDates] = useState<{ startDate?: string; endDate?: string }>(
+    {}
+  );
 
   const columns: ColumnDef<TSaller>[] = [
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown />
-          </Button>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown />
+        </Button>
+      ),
       cell: ({ row }) => <div className="ml-3">{row.getValue("name")}</div>,
     },
     {
       accessorKey: "email",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Email
-            <ArrowUpDown />
-          </Button>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown />
+        </Button>
+      ),
       cell: ({ row }) => <div className="ml-3">{row.getValue("email")}</div>,
     },
     {
       accessorKey: "Contact",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Contact
-            <ArrowUpDown />
-          </Button>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Contact
+          <ArrowUpDown />
+        </Button>
+      ),
       cell: ({ row }) => <div className="ml-3">{row.original.phone}</div>,
     },
     {
       accessorKey: "Status",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Status
-            <ArrowUpDown />
-          </Button>
-        );
-      },
-      cell: ({ row }) => <div className={`ml-3`}>{row.original.status}</div>,
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown />
+        </Button>
+      ),
+      cell: ({ row }) => <div className="ml-3">{row.original.status}</div>,
     },
     {
       id: "actions",
       header: "Action",
       enableHiding: false,
-      cell: ({ row }) => {
-        return (
-          <div className="isolate flex -space-x-px">
-            <Button
-              onClick={() => {
-                setModalOpen(true);
-                setSelectedId(row.original?._id);
-              }}
-              variant="outline"
-              className="rounded-r-none focus:z-10"
-            >
-              <Edit />
-            </Button>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <div className="isolate flex -space-x-px">
+          <Button
+            onClick={() => {
+              setModalOpen(true);
+              setSelectedId(row.original?._id);
+              setDates({
+                startDate: row.original.subStartDate
+                  ? new Date(row.original.subStartDate).toISOString()
+                  : undefined,
+                endDate: row.original.subEndDate
+                  ? new Date(row.original.subEndDate).toISOString()
+                  : undefined,
+              });
+            }}
+            variant="outline"
+            className="rounded-r-none focus:z-10"
+          >
+            <Edit />
+          </Button>
+        </div>
+      ),
     },
   ];
 
@@ -271,6 +272,7 @@ function SallerRequest() {
         setIsOpen={setModalOpen}
         sallerId={selectedId}
         refetch={refetch}
+        dates={dates}
       />
     </div>
   );

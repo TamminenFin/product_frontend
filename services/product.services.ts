@@ -13,11 +13,9 @@ export const createProduct = async (payload: FormData) => {
     return err?.response?.data;
   }
 };
-export const getAllProduct = async (date: DateRange | undefined) => {
+export const getAllProduct = async () => {
   try {
-    const { data } = await axiosInstance.get(
-      `/product/get-products?form=${date?.from}&to=${date?.to}`
-    );
+    const { data } = await axiosInstance.get(`/product/get-products`);
     return data;
   } catch (err: any) {
     return err?.response?.data;

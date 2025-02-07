@@ -24,10 +24,10 @@ export const useCreateProduct = () => {
   });
 };
 
-export const useGetAllProduct = (date: DateRange | undefined) => {
+export const useGetAllProduct = () => {
   return useQuery({
-    queryKey: ["GET_ALL_PRODUCT", date],
-    queryFn: async () => await getAllProduct(date),
+    queryKey: ["GET_ALL_PRODUCT"],
+    queryFn: async () => await getAllProduct(),
   });
 };
 export const useGetSingleProduct = (id: string) => {

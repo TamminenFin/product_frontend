@@ -18,6 +18,7 @@ const AddProduct = () => {
   const [image, setImage] = useState<File | string | null>(null);
   const { mutate: createProduct, isPending } = useCreateProduct();
   const route = useRouter();
+  const [price, setPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState([]);
 
   const handleAddProduct = async (e: FormEvent) => {
@@ -27,7 +28,6 @@ const AddProduct = () => {
     const formData = new FormData(formElement);
 
     const name = formData.get("name") as string;
-    const price = formData.get("price") as string;
     const description = formData.get("description") as string;
 
     const category = selectedCategory?.map((cat: { label: string }) => ({
@@ -39,11 +39,18 @@ const AddProduct = () => {
     }
     formData.append(
       "data",
-      JSON.stringify({ name, price, location, category, description })
+      JSON.stringify({
+        name,
+        price: parseFloat(price),
+        location,
+        category,
+        description,
+      })
     );
 
     createProduct(formData, {
       onSuccess: (data) => {
+        console.log(data);
         if (data?.success) {
           toast.dismiss(loadingToast);
           route.push("/dashboard/product");
@@ -88,8 +95,17 @@ const AddProduct = () => {
           <Input
             name="price"
             required
-            type="number"
+            type="text"
             className="mt-1 mb-2 border-gray-300"
+            value={price}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Validate and allow only numbers with optional decimals
+              if (/^\d*\.?\d*$/.test(value)) {
+                setPrice(value);
+              }
+            }}
+            placeholder="Enter price (e.g., 20.45)"
           />
           <Label>Category</Label>
           <Select

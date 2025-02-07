@@ -51,6 +51,7 @@ export type TSaller = {
   address: string;
   subEndDate?: Date;
   subStartDate?: Date;
+  transactionId?: string;
 };
 
 export type TSubscription = {
@@ -63,5 +64,13 @@ export type TPricingPlan = {
   title: string;
   price: number;
   features: string[];
+  _id?: string;
+};
+
+export type TRequest = {
+  name: string;
+  productCount: number;
+  sallerId: string;
+  email: string;
   _id?: string;
 };

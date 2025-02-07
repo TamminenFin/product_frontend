@@ -64,19 +64,21 @@ const MyCategory = () => {
       <Separator className="my-4 w-full" />
       <div>
         <div className="flex items-center justify-center flex-wrap gap-3">
-          {data?.data?.map((category: TCategory) => (
-            <div
-              className={`text-xs md:text-base font-medium cursor-pointer rounded-full ${
-                isSelected(category?.name)
-                  ? "bg-blue-600 text-white py-[6px] px-[14px]"
-                  : "border-2 border-blue-600 py-1 px-3"
-              }`}
-              key={category?._id}
-              onClick={() => handleSelect(category?.name)}
-            >
-              {category?.name}
-            </div>
-          ))}
+          {data?.data
+            ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+            ?.map((category: TCategory) => (
+              <div
+                className={`text-xs md:text-base font-medium cursor-pointer rounded-full ${
+                  isSelected(category?.name)
+                    ? "bg-blue-600 text-white py-[6px] px-[14px]"
+                    : "border-2 border-blue-600 py-1 px-3"
+                }`}
+                key={category?._id}
+                onClick={() => handleSelect(category?.name)}
+              >
+                {category?.name}
+              </div>
+            ))}
         </div>
         <div className="mt-14 flex justify-center items-center">
           <button
