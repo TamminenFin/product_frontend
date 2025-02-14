@@ -41,8 +41,6 @@ const SignUpForm = () => {
   const route = useRouter();
   const searchParams = useSearchParams();
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formElement = e.target as HTMLFormElement;
@@ -90,20 +88,12 @@ const SignUpForm = () => {
             setIsLoading(true);
           }
         },
-        onError: () => {
-          setErrorMessage("Failed to create account. Please try again.");
-        },
       }
     );
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Error Message */}
-      {errorMessage && (
-        <p className="text-red-500 text-sm text-center">{errorMessage}</p>
-      )}
-
       {/* Name Input */}
       <InputField
         label="User Name"

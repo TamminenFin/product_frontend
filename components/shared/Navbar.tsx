@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "../ui/input";
 import { Search } from "lucide-react";
-// import { TProduct } from "@/types";
-// import { LuSearchX } from "react-icons/lu";
-// import { useGetProductBySearch } from "@/hooks/product.hooks";
-// import Image from "next/image";
-// import { FaLocationDot } from "react-icons/fa6"
 import { useUser } from "@/lib/user.provider";
 import Link from "next/link";
 import { useGetCurrentSaller } from "@/hooks/auth.hooks";
@@ -33,15 +28,9 @@ const Navbar = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  // const selectedCategory = searchParams.get("category");
   const selectedLocations = searchParams.getAll("location[]") || [];
 
-  // const { data } = useGetProductBySearch(
-  //   searchTerm,
-  //   selectedCategory || "",
-  //   selectedLocation || ""
-  // );
-
+  // Handle location change
   const handleLocationChange = (selectedOptions: MultiValue<OptionType>) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -55,6 +44,7 @@ const Navbar = () => {
     router.push(`?${params.toString()}`);
   };
 
+  // Navigate to the dashboard or show appropriate modal if conditions are met
   const handleNavigate = () => {
     if (userInfo?.data?.status === "Pending") {
       setPendingModalOpen(true);
@@ -67,24 +57,25 @@ const Navbar = () => {
     router.push(user?.role === "admin" ? "/admin" : "/dashboard");
   };
 
+  // Update the search term and searchParams in URL
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim(); // Trim extra spaces
+    const value = e.target.value.trim();
     setSearchTerm(value);
+  };
 
+  // Update the searchParams in the URL based on searchTerm
+  useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-    if (value) {
-      params.set("searchTerms", value);
+
+    if (searchTerm) {
+      params.set("searchTerms", searchTerm);
     } else {
       params.delete("searchTerms");
     }
 
-    router.push(`?${params.toString()}`); // Update the URL with the search term
-  };
-
-  // const handleNavigateProduct = (id: string) => {
-  //   router.push(`/product/${id}`);
-  //   setSearchTerm("");
-  // };
+    // Update the URL with the search term
+    router.push(`?${params.toString()}`);
+  }, [searchTerm, searchParams, router]);
 
   const locationOptions = Citys.map((city) => ({
     value: city.city,
@@ -129,43 +120,6 @@ const Navbar = () => {
               size={20}
               className="absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400"
             />
-            {/* Only show search results if there's a search term */}
-            {/* {searchTerm && data?.data?.length > 0 ? (
-              <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mt-1 rounded shadow-md z-10">
-                <ScrollArea className="h-72">
-                  {data?.data?.map((product: Partial<TProduct>) => (
-                    <div
-                      key={product?._id}
-                      onClick={() =>
-                        handleNavigateProduct(product?._id as string)
-                      }
-                      className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 flex items-center gap-2"
-                    >
-                      <Image
-                        src={product?.image as string}
-                        width={40}
-                        height={40}
-                        alt={product?.name as string}
-                      />
-                      <div>
-                        <h1 className="text-md font-medium">{product?.name}</h1>
-                        <div className="flex items-center text-xs mt-1 text-gray-500">
-                          <FaLocationDot />
-                          <p>{product?.location}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </ScrollArea>
-              </div>
-            ) : searchTerm ? (
-              <div className="absolute top-full left-0 w-full bg-white border border-gray-200  mt-1 rounded shadow-md z-10 flex items-center py-5 gap-2 text-gray-500 text-md justify-center">
-                <span>
-                  <LuSearchX />
-                </span>
-                <p>No result found</p>
-              </div>
-            ) : null} */}
           </div>
         </div>
 
@@ -209,42 +163,6 @@ const Navbar = () => {
               size={14}
               className="absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400"
             />
-            {/* Only show search results if there's a search term */}
-            {/* {searchTerm && data?.data?.length > 0 ? (
-                <div className="absolute top-full left-0 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 mt-1 rounded shadow-md z-10">
-                  <ScrollArea className="h-52">
-                    {data?.data?.map((product: Partial<TProduct>) => (
-                      <div
-                        key={product?._id}
-                        className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-100 flex items-center gap-2"
-                      >
-                        <Image
-                          src={product?.image as string}
-                          width={30}
-                          height={30}
-                          alt={product?.name as string}
-                        />
-                        <div>
-                          <h1 className="text-[10px] font-medium leading-tight">
-                            {product?.name}
-                          </h1>
-                          <div className="flex items-center text-[10px] text-gray-500">
-                            <FaLocationDot />
-                            <p>{product?.location}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </ScrollArea>
-                </div>
-              ) : searchTerm ? (
-                <div className="absolute top-full left-0 w-full bg-white border border-gray-200  mt-1 rounded shadow-md z-10 flex items-center py-5 gap-2 text-gray-500 text-xs justify-center">
-                  <span>
-                    <LuSearchX />
-                  </span>
-                  <p>No result found</p>
-                </div>
-              ) : null} */}
           </div>
         </div>
       </div>

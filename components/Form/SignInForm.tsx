@@ -22,9 +22,11 @@ const SignInForm = () => {
     signInUser(
       { email, password },
       {
-        onSuccess: () => {
-          setIsLoading(true);
-          route.push("/");
+        onSuccess: (data) => {
+          if (data?.success) {
+            setIsLoading(true);
+            route.push("/");
+          }
         },
       }
     );
