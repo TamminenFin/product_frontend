@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, FormEvent } from "react";
+import React, { FormEvent } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useUserRegistation } from "@/hooks/auth.hooks";

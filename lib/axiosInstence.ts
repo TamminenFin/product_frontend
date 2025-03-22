@@ -4,7 +4,7 @@ import axios from "axios";
 import { cookies } from "next/headers";
 
 const axiosInstance = axios.create({
-  baseURL: "https://product-serch-server.vercel.app/api/v1",
+  baseURL: `${process.env.NEXT_PUBLIC_URL}/api/v1`,
   withCredentials: true,
 });
 

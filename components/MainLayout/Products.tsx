@@ -19,7 +19,9 @@ export default function Product() {
 
   const fetchProducts = async ({ pageParam }: { pageParam: number }) => {
     const res = await fetch(
-      `https://product-serch-server.vercel.app/api/v1/product?page=${pageParam}&limit=3&location=${
+      `${
+        process.env.NEXT_PUBLIC_URL
+      }/api/v1/product?page=${pageParam}&limit=3&location=${
         selectedLocation || ""
       }&category=${selectedCategory || ""}&searchTerms=${searchTerms || ""}`
     );

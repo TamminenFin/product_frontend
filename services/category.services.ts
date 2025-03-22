@@ -45,15 +45,12 @@ export const deleteCategory = async (id: string) => {
 };
 
 export const getCategorys = async () => {
-  const res = await fetch(
-    "https://product-serch-server.vercel.app/api/v1/category",
-    {
-      cache: "force-cache",
-      next: {
-        tags: ["category"],
-      },
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/v1/category`, {
+    cache: "force-cache",
+    next: {
+      tags: ["category"],
+    },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch categories");
