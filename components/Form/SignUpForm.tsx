@@ -34,6 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import translate from "@/utils/translate";
 
 const SignUpForm = () => {
   const { mutate: createUser, isPending } = useUserRegistation();
@@ -96,36 +97,36 @@ const SignUpForm = () => {
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Name Input */}
       <InputField
-        label="User Name"
+        label={translate.signUp.fields.userName.label}
         id="name"
-        placeholder="User name"
+        placeholder={translate.signUp.fields.userName.placeholder}
         icon={User}
         required
       />
 
       {/* Email Input */}
       <InputField
-        label="Email Address"
+        label={translate.signUp.fields.email.label}
         id="email"
         type="email"
-        placeholder="Enter your email"
+        placeholder={translate.signUp.fields.email.placeholder}
         icon={Mail}
         required
       />
 
       {/* Contact Input */}
       <InputField
-        label="Phone Number"
+        label={translate.signUp.fields.phone.label}
         id="phone"
         type="text"
-        placeholder="Enter your Contact Number"
+        placeholder={translate.signUp.fields.phone.placeholder}
         icon={Phone}
         required
       />
 
       {/* Password Input */}
       <InputField
-        label="Password"
+        label={translate.signUp.fields.password.label}
         id="password"
         type="password"
         placeholder="* * * * * *"
@@ -135,23 +136,25 @@ const SignUpForm = () => {
 
       {/* Address Input */}
       <InputField
-        label="Address"
+        label={translate.signUp.fields.address.label}
         id="address"
-        placeholder="Your address"
+        placeholder={translate.signUp.fields.address.placeholder}
         icon={MapPin}
         required
       />
 
       <div className="flex items-center gap-3 w-full">
         <div className="w-full">
-          <Label>City</Label>
+          <Label>{translate.signUp.fields.city.label}</Label>
           <Select name="city" required>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a City" />
+              <SelectValue
+                placeholder={translate.signUp.fields.city.placeholder}
+              />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>City</SelectLabel>
+                <SelectLabel>{translate.signUp.fields.city.label}</SelectLabel>
                 <ScrollArea className="h-52">
                   {Citys.sort((a, b) => a.city.localeCompare(b.city)).map(
                     (location, index) => (
@@ -169,16 +172,21 @@ const SignUpForm = () => {
           </Select>
         </div>
         <div className="w-full">
-          <Label>Postal Code</Label>
-          <Input name="postCode" type="text" required placeholder="Post Code" />
+          <Label>{translate.signUp.fields.postalCode.label}</Label>
+          <Input
+            name="postCode"
+            type="text"
+            required
+            placeholder={translate.signUp.fields.postalCode.placeholder}
+          />
         </div>
       </div>
 
       {/* Shop Name Input */}
       <InputField
-        label="Shop Name"
+        label={translate.signUp.fields.shopName.label}
         id="shopName"
-        placeholder="Your shop name"
+        placeholder={translate.signUp.fields.shopName.placeholder}
         icon={Store}
         required
       />
@@ -188,7 +196,7 @@ const SignUpForm = () => {
       <div className="relative">
         <div className="flex items-center gap-3">
           <Label htmlFor="shopId" className="text-gray-700 dark:text-gray-300">
-            Shop ID (Optional)
+            {translate.signUp.fields.shopID.label}
           </Label>
           <TooltipProvider>
             <Tooltip>
@@ -196,7 +204,7 @@ const SignUpForm = () => {
                 <Info className="h-4 w-4 text-muted-foreground cursor-pointer" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>This is your unique shop identifier, if available.</p>
+                <p>{translate.signUp.fields.shopID.tooltip}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -207,7 +215,7 @@ const SignUpForm = () => {
             type={"text"}
             id="shopId"
             name="shopId"
-            placeholder="Shop ID (optional)"
+            placeholder={translate.signUp.fields.shopID.placeholder}
             className="pl-10"
           />
         </div>
@@ -226,7 +234,7 @@ const SignUpForm = () => {
         {isPending ? (
           <Loader className="w-5 h-5 mx-auto animate-spin" />
         ) : (
-          "Sign Up"
+          `${translate.signUp.button}`
         )}
       </button>
     </form>

@@ -1,6 +1,7 @@
 "use client";
 import { useSendCategoryRequest } from "@/hooks/category.hooks";
 import { useUser } from "@/lib/user.provider";
+import translate from "@/utils/translate";
 import React from "react";
 
 const ReqForCategory = () => {
@@ -26,12 +27,15 @@ const ReqForCategory = () => {
     <div className="flex justify-center items-center min-h-[calc(100vh-50px)]">
       <div className="max-w-md w-full px-4 rounded-lg">
         <h2 className="text-xl font-semibold mb-4 text-center">
-          Request a New Category
+          {translate.sallerDashboard.categoryRequestPage.heading}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-center">
-              Category Name
+              {
+                translate.sallerDashboard.categoryRequestPage.fieldLabels
+                  .categoryName
+              }
             </label>
             <input
               type="text"
@@ -42,7 +46,10 @@ const ReqForCategory = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 text-center">
-              Number of Products
+              {
+                translate.sallerDashboard.categoryRequestPage.fieldLabels
+                  .numOfProduct
+              }
             </label>
             <input
               type="number"
@@ -55,7 +62,9 @@ const ReqForCategory = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
           >
-            {isPending ? "Sending..." : "Submit Request"}
+            {isPending
+              ? "Sending..."
+              : translate.sallerDashboard.categoryRequestPage.buttonText}
           </button>
         </form>
       </div>

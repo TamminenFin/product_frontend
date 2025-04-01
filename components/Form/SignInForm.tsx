@@ -5,6 +5,7 @@ import { Input } from "../ui/input";
 import { useUserSignIn } from "@/hooks/auth.hooks";
 import { useUser } from "@/lib/user.provider";
 import { useRouter } from "next/navigation";
+import translate from "@/utils/translate";
 
 const SignInForm = () => {
   const { mutate: signInUser } = useUserSignIn();
@@ -36,13 +37,13 @@ const SignInForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <Label htmlFor="email" className="text-gray-700 dark:text-gray-300">
-            Email Address
+            {translate.signIn.labels.email}
           </Label>
           <Input
             type="email"
             id="email"
             name="email"
-            placeholder="Enter your email"
+            placeholder={translate.signIn.emailPlaceholder}
             className="mt-1 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-purple-500 focus:outline-none"
             required
           />
@@ -52,7 +53,7 @@ const SignInForm = () => {
             htmlFor="password"
             className="text-gray-700 dark:text-gray-300"
           >
-            Password
+            {translate.signIn.labels.password}
           </Label>
           <Input
             type="password"
@@ -67,7 +68,7 @@ const SignInForm = () => {
           type="submit"
           className="w-full bg-purple-500 py-2 rounded-md text-white hover:bg-purple-600"
         >
-          Sign In
+          {translate.signIn.buttonText}
         </button>
       </form>
     </div>

@@ -12,6 +12,7 @@ import { Separator } from "../ui/separator";
 import { TCategory } from "@/types";
 import { X } from "lucide-react";
 import DeleteConfirmationModal from "../model/DeleteConfirmationModal";
+import translate from "@/utils/translate";
 
 type SelectedItemType = { name: string; _id: string } | null;
 
@@ -70,7 +71,7 @@ const Category = () => {
           className="bg-purple-600 px-5 py-2 rounded-md text-white"
           onClick={() => setIsOpen(true)}
         >
-          Create Category
+          {translate.admin.categoriesPage.buttonText}
         </button>
       </div>
       <Separator className="my-4" />

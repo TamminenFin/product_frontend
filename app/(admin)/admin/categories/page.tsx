@@ -1,11 +1,12 @@
 import Category from "@/components/Admin/Category";
+import translate from "@/utils/translate";
 import React from "react";
 
 const CategoriesPage = () => {
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-semibold text-center">
-        All Category
+        {translate.admin.categoriesPage.heading}
       </h1>
       <Category />
     </div>

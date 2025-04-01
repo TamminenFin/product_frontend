@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon, Plus } from "lucide-react";
 import { Calendar } from "../ui/calendar";
+import translate from "@/utils/translate";
 
 type Props = {
   isOpen: boolean;
@@ -94,19 +95,16 @@ const SubscriptionModal = ({
             </div>
           </div>
           <DialogTitle className="text-2xl font-semibold text-gray-800 text-center">
-            Set Subscription Period
+            {translate.admin.sallers.modal.heading}
           </DialogTitle>
           <DialogDescription className="text-center text-sm text-gray-600 mt-2">
-            <p>
-              Please select the start and end dates for your subscription
-              period.
-            </p>
+            <p>{translate.admin.sallers.modal.title}</p>
             <Button
               onClick={handleAddOneMonth}
               variant="outline"
               className="mt-2"
             >
-              <Plus /> Month
+              <Plus /> {translate.admin.sallers.modal.monthButton}
             </Button>
           </DialogDescription>
         </DialogHeader>
@@ -114,7 +112,7 @@ const SubscriptionModal = ({
         <form onSubmit={handleConfirm} className="mt-2 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Start Date
+              {translate.admin.sallers.modal.labels.startDate}
             </label>
             <Popover>
               <PopoverTrigger asChild>
@@ -146,7 +144,7 @@ const SubscriptionModal = ({
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              End Date
+              {translate.admin.sallers.modal.labels.endDate}
             </label>
             <Popover>
               <PopoverTrigger asChild>
@@ -210,7 +208,7 @@ const SubscriptionModal = ({
                 Loading...
               </span>
             ) : (
-              "Confirm"
+              translate.admin.sallers.modal.confirmButton
             )}
           </button>
         </form>

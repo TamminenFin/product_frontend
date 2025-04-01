@@ -12,6 +12,7 @@ import SubscriptionEndMessage from "../model/SubscriptionEndMessage";
 import { Citys } from "@/types/Citys";
 import { MultiValue } from "react-select";
 import Select from "react-select";
+import translate from "@/utils/translate";
 
 type OptionType = {
   value: string;
@@ -89,7 +90,7 @@ const Navbar = () => {
           href="/"
           className="text-xl sm:text-2xl font-bold text-purple-600"
         >
-          Logo
+          {translate.home.logo}
         </Link>
 
         {/* Location Dropdown */}
@@ -111,7 +112,7 @@ const Navbar = () => {
           <div className="relative">
             <Input
               type="text"
-              placeholder="Search..."
+              placeholder={translate.home.searchPlaceholder}
               className="pl-10"
               value={searchTerm}
               onChange={handleSearchChange}
@@ -129,12 +130,12 @@ const Navbar = () => {
             onClick={handleNavigate}
             className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm"
           >
-            Dashboard
+            {translate.home.goToDashboard}
           </button>
         ) : (
           <Link href={"/signin"}>
             <button className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm">
-              Be a Seller
+              {translate.home.goToLoginButton}
             </button>
           </Link>
         )}
@@ -148,13 +149,13 @@ const Navbar = () => {
               selectedLocations.includes(option.value)
             )}
             onChange={handleLocationChange}
-            placeholder="Select Location"
+            placeholder={translate.home.selectCity}
             className="text-[10px] w-full"
           />
           <div className="relative w-full">
             <input
               type="text"
-              placeholder="Search..."
+              placeholder={translate.home.searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
               className="pl-7 focus:ring-2 focus:ring-blue-500 focus:outline-none sm:focus:ring-purple-500 placeholder:text-xs w-full border-gray-300 py-1.5 rounded text-xs border"

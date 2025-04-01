@@ -4,6 +4,7 @@
 import { useSendRequest } from "@/hooks/auth.hooks";
 import { useGeatAllCategory } from "@/hooks/category.hooks";
 import { TCategory } from "@/types";
+import translate from "@/utils/translate";
 import { Loader, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -58,8 +59,8 @@ const RequestForCategory = () => {
       <div className="text-center mb-6">
         <p className="text-lg font-medium">
           {selectCategory.length > 0
-            ? `You have selected ${selectCategory.length} category(ies). Total cost: S/‎${totalCost}/month.`
-            : "Select categories to see the total cost."}
+            ? `${translate.selectCategory.totalText1st} ${selectCategory.length} ${translate.selectCategory.totalText2st} S/‎${totalCost}/${translate.selectCategory.totalText3st}.`
+            : translate.selectCategory.totalText}
         </p>
       </div>
 
@@ -96,7 +97,7 @@ const RequestForCategory = () => {
           {isPending ? (
             <Loader className="w-5 h-5 mx-auto animate-spin" />
           ) : (
-            "Send Request"
+            `${translate.selectCategory.button}`
           )}
         </button>
       </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuIcon, MountainIcon } from "lucide-react";
 import Link from "next/link";
+import translate from "@/utils/translate";
 
 const SideBarSaller = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -23,7 +24,7 @@ const SideBarSaller = ({ children }: { children: ReactNode }) => {
               prefetch={false}
             >
               <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">Acme Inc</span>
+              <span className="text-lg">{translate.home.logo}</span>
             </Link>
             <SallerNavLink onLinkClick={handleSidebarClose} />
           </div>
@@ -55,7 +56,7 @@ const SideBarSaller = ({ children }: { children: ReactNode }) => {
               prefetch={false}
             >
               <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">Acme Inc</span>
+              <span className="text-lg">{translate.home.logo}</span>
             </Link>
           </div>
         </header>

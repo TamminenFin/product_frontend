@@ -1,4 +1,5 @@
 import MyCategory from "@/components/Saller/MyCategory";
+import translate from "@/utils/translate";
 
 const Page = () => {
   return (
@@ -10,11 +11,11 @@ const Page = () => {
       <div className="mt-auto  py-4 text-center text-sm text-gray-700">
         <strong>Need more categories?</strong>
         <p>
-          If you need an increased category limit, feel free to contact us at{" "}
+          {translate.sallerDashboard.myCategoryPage.footer.beforeContactText}{" "}
           <a href="tel:+8801615718970" className="text-blue-500">
-            +8801615718970
+            {translate.sallerDashboard.myCategoryPage.footer.contactNumber}
           </a>{" "}
-          for assistance. We’re here to help!
+          {translate.sallerDashboard.myCategoryPage.footer.afterContactText}
         </p>
       </div>
     </div>

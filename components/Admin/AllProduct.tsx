@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Trash } from "lucide-react";
-import { PiSlidersHorizontal } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -26,15 +25,10 @@ import {
 import { useDeleteProduct, useGetAllProduct } from "@/hooks/product.hooks";
 import { Input } from "../ui/input";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { TProduct } from "@/types";
 import DeleteConfirmationModal from "../model/DeleteConfirmationModal";
 import Image from "next/image";
+import translate from "@/utils/translate";
 
 type SelectedItemType = { name: string; _id: string } | null;
 
@@ -73,7 +67,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Name
+            {translate.admin.allProductPage.tableHeadings.name}
             <ArrowUpDown />
           </Button>
         );
@@ -83,7 +77,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
     {
       accessorKey: "image",
       header: ({}) => {
-        return <p>Image</p>;
+        return <p> {translate.admin.allProductPage.tableHeadings.image}</p>;
       },
       cell: ({ row }) => (
         <div className="ml-3">
@@ -105,7 +99,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Location
+            {translate.admin.allProductPage.tableHeadings.location}
             <ArrowUpDown />
           </Button>
         );
@@ -120,7 +114,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Category
+            {translate.admin.allProductPage.tableHeadings.category}
             <ArrowUpDown />
           </Button>
         );
@@ -141,7 +135,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            price
+            {translate.admin.allProductPage.tableHeadings.price}
             <ArrowUpDown />
           </Button>
         );
@@ -156,7 +150,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Created At
+            {translate.admin.allProductPage.tableHeadings.createdAt}
             <ArrowUpDown />
           </Button>
         );
@@ -170,7 +164,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
   if (!isAdmin) {
     columns.push({
       id: "actions",
-      header: "Action",
+      header: `${translate.admin.allProductPage.tableHeadings.action}`,
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -210,7 +204,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Saller Name
+            {translate.admin.allProductPage.tableHeadings.sallerName}
             <ArrowUpDown />
           </Button>
         );
@@ -246,10 +240,12 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Products</h1>
+      <h1 className="text-2xl font-semibold">
+        {translate.admin.allProductPage.heading}
+      </h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
         <Input
-          placeholder="Filter Product..."
+          placeholder={translate.admin.allProductPage.searchPlaceholder}
           value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table?.getColumn("name")?.setFilterValue(event.target.value)
@@ -260,36 +256,10 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
           {!isAdmin && (
             <Link href="/dashboard/product/add">
               <button className="text-sm bg-red py-2 rounded px-5 bg-blue-600 text-white ">
-                Add Product
+                {translate.admin.allProductPage.addProductButton}
               </button>
             </Link>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                View <PiSlidersHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
       <div className="rounded-md border mt-5">
@@ -352,10 +322,6 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel()?.rows?.length} of{" "}
-          {table.getFilteredRowModel()?.rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -363,7 +329,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translate.admin.allProductPage.buttons.previous}
           </Button>
           <Button
             variant="outline"
@@ -371,7 +337,7 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translate.admin.allProductPage.buttons.next}
           </Button>
         </div>
       </div>

@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, Plus } from "lucide-react";
-import { PiSlidersHorizontal } from "react-icons/pi";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,15 +24,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { useGetSubscriptionSaller } from "@/hooks/auth.hooks";
 import AddTransactionIdModal from "../model/AddTransactionIdModal";
 import { TSaller } from "@/types";
+import translate from "@/utils/translate";
 
 function SubscriptionDeadline() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +47,7 @@ function SubscriptionDeadline() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Name
+            {translate.admin.subscriptionCheck.tableHeadings.name}
             <ArrowUpDown />
           </Button>
         );
@@ -68,7 +62,7 @@ function SubscriptionDeadline() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Email
+            {translate.admin.subscriptionCheck.tableHeadings.email}
             <ArrowUpDown />
           </Button>
         );
@@ -83,7 +77,7 @@ function SubscriptionDeadline() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Contact
+            {translate.admin.subscriptionCheck.tableHeadings.contact}
             <ArrowUpDown />
           </Button>
         );
@@ -98,7 +92,7 @@ function SubscriptionDeadline() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Start Date
+            {translate.admin.subscriptionCheck.tableHeadings.startDate}
             <ArrowUpDown />
           </Button>
         );
@@ -119,7 +113,7 @@ function SubscriptionDeadline() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            End Date
+            {translate.admin.subscriptionCheck.tableHeadings.endDate}
             <ArrowUpDown />
           </Button>
         );
@@ -135,7 +129,7 @@ function SubscriptionDeadline() {
 
     {
       id: "Transaction Id",
-      header: "Transaction Id",
+      header: `${translate.admin.subscriptionCheck.tableHeadings.transactionId}`,
       enableHiding: false,
       cell: ({ row }) => {
         return row.original.transactionId ? (
@@ -183,44 +177,18 @@ function SubscriptionDeadline() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Deadline Soon!!</h1>
+      <h1 className="text-2xl font-semibold">
+        {translate.admin.subscriptionCheck.heading}
+      </h1>
       <div className="flex flex-row gap-3 justify-between py-4">
         <Input
-          placeholder="Filter Email..."
+          placeholder={translate.admin.subscriptionCheck.searchPlaceholder}
           value={(table?.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table?.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <div className="">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                View <PiSlidersHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -273,10 +241,6 @@ function SubscriptionDeadline() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel()?.rows?.length} of{" "}
-          {table.getFilteredRowModel()?.rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -284,7 +248,7 @@ function SubscriptionDeadline() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translate.admin.subscriptionCheck.buttons.previous}
           </Button>
           <Button
             variant="outline"
@@ -292,7 +256,7 @@ function SubscriptionDeadline() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translate.admin.subscriptionCheck.buttons.next}
           </Button>
         </div>
       </div>

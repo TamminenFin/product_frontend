@@ -2,6 +2,7 @@
 import { useGetDashboardData } from "@/hooks/dashboard.hooks";
 import { Card } from "../ui/card";
 import { useGetCurrentSaller } from "@/hooks/auth.hooks";
+import translate from "@/utils/translate";
 
 const SallerDashboard = () => {
   const { data, isLoading } = useGetDashboardData();
@@ -19,12 +20,17 @@ const SallerDashboard = () => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-7">
-        Your subscription will end in : {dayCount.toFixed()} day
+        {translate.sallerDashboard.dashboardPage.headings.beforeDateText}{" "}
+        {dayCount.toFixed()}{" "}
+        {translate.sallerDashboard.dashboardPage.headings.afterDateText}
       </h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card className="p-6">
           <div className="flex items-center justify-between">
-            <div className="text-muted-foreground">Total Product</div>
+            <div className="text-muted-foreground">
+              {" "}
+              {translate.sallerDashboard.dashboardPage.cardTitels.totalProduct}
+            </div>
           </div>
           <div className="mt-4 text-2xl md:text-3xl font-semibold">
             {data?.data?.productCount}
@@ -32,7 +38,10 @@ const SallerDashboard = () => {
         </Card>
         <Card className="p-6">
           <div className="flex items-center justify-between">
-            <div className="text-muted-foreground">Total Category</div>
+            <div className="text-muted-foreground">
+              {" "}
+              {translate.sallerDashboard.dashboardPage.cardTitels.totalCategory}
+            </div>
           </div>
           <div className="mt-4 text-2xl md:text-3xl font-semibold">
             {data?.data?.categoryCount}

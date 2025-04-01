@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, Edit, Eye } from "lucide-react";
-import { PiSlidersHorizontal } from "react-icons/pi";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,15 +25,10 @@ import {
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { TSaller } from "@/types";
 import { useGetAllSaller } from "@/hooks/auth.hooks";
 import SubscriptionModal from "../model/SubscriptionModal";
+import translate from "@/utils/translate";
 
 function AllSallers() {
   const { data, isLoading, refetch } = useGetAllSaller();
@@ -58,7 +52,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Name
+            {translate.admin.sallers.tableHeadings.name}
             <ArrowUpDown />
           </Button>
         );
@@ -73,7 +67,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Email
+            {translate.admin.sallers.tableHeadings.email}
             <ArrowUpDown />
           </Button>
         );
@@ -88,7 +82,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Contact
+            {translate.admin.sallers.tableHeadings.contact}
             <ArrowUpDown />
           </Button>
         );
@@ -103,7 +97,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Total <br /> Category
+            {translate.admin.sallers.tableHeadings.totalCategory}
             <ArrowUpDown />
           </Button>
         );
@@ -120,7 +114,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Total <br /> Product
+            {translate.admin.sallers.tableHeadings.totalProduct}
             <ArrowUpDown />
           </Button>
         );
@@ -137,7 +131,7 @@ function AllSallers() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Status
+            {translate.admin.sallers.tableHeadings.status}
             <ArrowUpDown />
           </Button>
         );
@@ -164,7 +158,7 @@ function AllSallers() {
 
     {
       id: "actions",
-      header: "Action",
+      header: `${translate.admin.sallers.tableHeadings.action}`,
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -216,49 +210,27 @@ function AllSallers() {
   });
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen bg-black/10 fixed inset-0 z-[999] backdrop-blur-md flex justify-center items-center">
+        <div className="w-16 h-16 border-4 border-t-transparent border-purple-600 rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Sallers</h1>
+      <h1 className="text-2xl font-semibold">
+        {translate.admin.sallers.heading}
+      </h1>
       <div className="flex flex-row gap-3 justify-between py-4">
         <Input
-          placeholder="Filter Email..."
+          placeholder={translate.admin.sallers.searchPlaceholder}
           value={(table?.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table?.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <div className="">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                View <PiSlidersHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -311,10 +283,6 @@ function AllSallers() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel()?.rows?.length} of{" "}
-          {table.getFilteredRowModel()?.rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -322,7 +290,7 @@ function AllSallers() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translate.admin.sallers.buttons.previous}
           </Button>
           <Button
             variant="outline"
@@ -330,7 +298,7 @@ function AllSallers() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translate.admin.sallers.buttons.next}
           </Button>
         </div>
       </div>

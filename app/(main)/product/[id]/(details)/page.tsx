@@ -1,5 +1,6 @@
 // import RelatedProduct from "@/components/MainLayout/RelatedProduct";
 import { getSingleProduct } from "@/services/product.services";
+import translate from "@/utils/translate";
 import Image from "next/image";
 import React from "react";
 
@@ -39,7 +40,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           <div className="mt-6 space-y-4">
             <div className="flex items-center space-x-4">
               <span className="text-sm sm:text-base text-gray-500">
-                Location:
+                {translate.productDetailsPage.labels.location}:
               </span>
               <span className="text-gray-700">{data?.data?.location}</span>
             </div>
@@ -47,7 +48,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           <div className="mt-3 space-y-4">
             <div className="flex items-center space-x-4">
               <span className="text-sm sm:text-base text-gray-500">
-                Shop Name:
+                {translate.productDetailsPage.labels.shopName}:
               </span>
               <span className="text-gray-700">
                 {data?.data?.sallerId?.shopName}
@@ -57,7 +58,7 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           <div className="mt-3 space-y-4">
             <div className="flex items-center space-x-4">
               <span className="text-sm sm:text-base text-gray-500">
-                Phone Number:
+                {translate.productDetailsPage.labels.phoneNumber}:
               </span>
               <span className="text-gray-700">
                 {data?.data?.sallerId?.phone}

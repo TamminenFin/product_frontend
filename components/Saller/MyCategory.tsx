@@ -6,6 +6,7 @@ import {
 } from "@/hooks/auth.hooks";
 import { useGeatAllCategory } from "@/hooks/category.hooks";
 import { TCategory } from "@/types";
+import translate from "@/utils/translate";
 import { useEffect, useState } from "react";
 
 type TSelectCategory = { name: string; status: string }[];
@@ -56,10 +57,10 @@ const MyCategory = () => {
   return (
     <div className="">
       <h1 className="text-xl md:text-2xl font-semibold text-center">
-        Category
+        {translate.sallerDashboard.myCategoryPage.heading}
       </h1>
       <p className="text-gray-500 text-center">
-        Select and manage your categories below
+        {translate.sallerDashboard.myCategoryPage.title}
       </p>
       <Separator className="my-4 w-full" />
       <div>
@@ -86,7 +87,7 @@ const MyCategory = () => {
             className="bg-blue-600 px-5 py-2 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isUpdateDisabled() || isPending}
           >
-            Update
+            {translate.sallerDashboard.myCategoryPage.buttonText}
           </button>
         </div>
       </div>

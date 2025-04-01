@@ -12,6 +12,7 @@ import { useGetCurrentSaller } from "@/hooks/auth.hooks";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TCategory } from "@/types";
+import translate from "@/utils/translate";
 
 const EditProduct = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetSingleProduct(id);
@@ -83,7 +84,9 @@ const EditProduct = ({ id }: { id: string }) => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Edit Product</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {translate.sallerDashboard.editProductPage.heading}
+      </h1>
       <form
         onSubmit={handelEditProduct}
         className="flex flex-col md:flex-row gap-8"
@@ -91,14 +94,14 @@ const EditProduct = ({ id }: { id: string }) => {
         <div className="w-full md:w-1/2">
           <ImageUpload
             name="productImage"
-            label="Upload Product Image"
+            label={translate.sallerDashboard.editProductPage.labels.image}
             setUploadedFile={setImage}
             uploadedFile={image}
             defaultImage={data?.data?.image}
           />
         </div>
         <div className="w-full md:w-1/2">
-          <Label>Name</Label>
+          <Label>{translate.sallerDashboard.editProductPage.labels.name}</Label>
           <Input
             defaultValue={data?.data?.name}
             name="name"
@@ -106,7 +109,9 @@ const EditProduct = ({ id }: { id: string }) => {
             type="text"
             className="mt-1 mb-2 border-gray-300"
           />
-          <Label>Price</Label>
+          <Label>
+            {translate.sallerDashboard.editProductPage.labels.price}
+          </Label>
           <Input
             defaultValue={data?.data?.price}
             name="price"
@@ -114,7 +119,9 @@ const EditProduct = ({ id }: { id: string }) => {
             type="number"
             className="mt-1 mb-2 border-gray-300"
           />
-          <Label>Category</Label>
+          <Label>
+            {translate.sallerDashboard.editProductPage.labels.category}
+          </Label>
           <Select
             isMulti
             name="category"
@@ -124,13 +131,17 @@ const EditProduct = ({ id }: { id: string }) => {
             value={selectedCategory}
             onChange={(selected) => {
               if (selected.length > 2) {
-                toast.error("You can select a maximum of 2 categories!");
+                toast.error(
+                  translate.sallerDashboard.editProductPage.selectError
+                );
               } else {
                 setSelectedCategory(selected as []);
               }
             }}
           />
-          <Label>Description</Label>
+          <Label>
+            {translate.sallerDashboard.editProductPage.labels.description}
+          </Label>
           <Textarea
             defaultValue={data?.data?.description}
             required
@@ -143,7 +154,7 @@ const EditProduct = ({ id }: { id: string }) => {
             type="submit"
             className="mt-2 w-full"
           >
-            Edit Product
+            {translate.sallerDashboard.editProductPage.buttonText}
           </Button>
         </div>
       </form>

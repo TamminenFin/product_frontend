@@ -7,6 +7,7 @@ import React from "react";
 import { BiLogoProductHunt } from "react-icons/bi";
 import { MdCategory, MdDashboard, MdOutlineLogout } from "react-icons/md";
 import { IoMdGitPullRequest } from "react-icons/io";
+import translate from "@/utils/translate";
 
 const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
   const { setIsLoading } = useUser();
@@ -34,7 +35,7 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <MdDashboard className="h-5 w-5" />
-          Dashboard
+          {translate.sallerDashboard.routes.dashboard}
         </Link>
         <Link
           href="/dashboard/product"
@@ -45,7 +46,7 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <BiLogoProductHunt className="h-5 w-5" />
-          Product
+          {translate.sallerDashboard.routes.product}
         </Link>
         <Link
           href="/dashboard/my-category"
@@ -56,7 +57,7 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <MdCategory className="h-5 w-5" />
-          My Category
+          {translate.sallerDashboard.routes.myCategory}
         </Link>
         <Link
           href="/dashboard/category-request"
@@ -67,7 +68,7 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <IoMdGitPullRequest className="h-5 w-5" />
-          Category Request
+          {translate.sallerDashboard.routes.categoryRequest}
         </Link>
       </div>
       <button
@@ -75,7 +76,7 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
         className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium  hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
       >
         <MdOutlineLogout className="h-5 w-5" />
-        Logout
+        {translate.sallerDashboard.routes.logout}
       </button>
     </nav>
   );

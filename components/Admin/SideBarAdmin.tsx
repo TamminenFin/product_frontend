@@ -2,6 +2,7 @@
 import Navlinks from "@/components/Admin/Navlinks";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import translate from "@/utils/translate";
 import { MenuIcon, MountainIcon } from "lucide-react";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
@@ -23,7 +24,7 @@ const SideBarAdmin = ({ children }: { children: ReactNode }) => {
               prefetch={false}
             >
               <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">Acme Inc</span>
+              <span className="text-lg">{translate.home.logo}</span>
             </Link>
             <Navlinks onLinkClick={handleSidebarClose} />
           </div>
@@ -55,7 +56,7 @@ const SideBarAdmin = ({ children }: { children: ReactNode }) => {
               prefetch={false}
             >
               <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">Acme Inc</span>
+              <span className="text-lg">{translate.home.logo}</span>
             </Link>
           </div>
         </header>

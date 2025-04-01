@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, Trash } from "lucide-react";
-import { PiSlidersHorizontal } from "react-icons/pi";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,15 +25,10 @@ import {
 } from "@/components/ui/table";
 import { useDeleteProduct, useGetSallerProduct } from "@/hooks/product.hooks";
 import { Input } from "../ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { TProduct } from "@/types";
 import DeleteConfirmationModal from "../model/DeleteConfirmationModal";
 import Image from "next/image";
+import translate from "@/utils/translate";
 
 type SelectedItemType = { name: string; _id: string } | null;
 
@@ -73,7 +67,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Name
+            {translate.admin.sallerProductPage.tableHeadings.name}
             <ArrowUpDown />
           </Button>
         );
@@ -83,7 +77,7 @@ function SallerProducts({ id }: { id: string }) {
     {
       accessorKey: "image",
       header: ({}) => {
-        return <p>Image</p>;
+        return <p> {translate.admin.sallerProductPage.tableHeadings.image}</p>;
       },
       cell: ({ row }) => (
         <div className="ml-3">
@@ -105,7 +99,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Location
+            {translate.admin.sallerProductPage.tableHeadings.location}
             <ArrowUpDown />
           </Button>
         );
@@ -120,7 +114,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Category
+            {translate.admin.sallerProductPage.tableHeadings.category}
             <ArrowUpDown />
           </Button>
         );
@@ -141,7 +135,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            price
+            {translate.admin.sallerProductPage.tableHeadings.price}
             <ArrowUpDown />
           </Button>
         );
@@ -156,7 +150,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Saller Name
+            {translate.admin.sallerProductPage.tableHeadings.sallerName}
             <ArrowUpDown />
           </Button>
         );
@@ -167,7 +161,7 @@ function SallerProducts({ id }: { id: string }) {
     },
     {
       id: "actions",
-      header: "Action",
+      header: `${translate.admin.sallerProductPage.tableHeadings.action}`,
       enableHiding: false,
       cell: ({ row }) => {
         return (
@@ -215,44 +209,18 @@ function SallerProducts({ id }: { id: string }) {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Saller Products</h1>
+      <h1 className="text-2xl font-semibold">
+        {translate.admin.sallerProductPage.heading}{" "}
+      </h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
         <Input
-          placeholder="Filter Product..."
+          placeholder={translate.admin.sallerProductPage.searchPlaceholder}
           value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table?.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <div className="flex items-center flex-row-reverse md:flex-row justify-between md:justify-start gap-2 mt-4 md:mt-0">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                View <PiSlidersHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -305,10 +273,6 @@ function SallerProducts({ id }: { id: string }) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel()?.rows?.length} of{" "}
-          {table.getFilteredRowModel()?.rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"

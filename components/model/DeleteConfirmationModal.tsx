@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import translate from "@/utils/translate";
 import { Trash2 } from "lucide-react"; // Add the trash icon
 import { FormEvent } from "react";
 
@@ -31,12 +32,12 @@ const DeleteConfirmationModal = ({
             </div>
           </div>
           <DialogTitle className="text-2xl font-semibold text-gray-800 text-center">
-            Confirm Deletion
+            {translate.admin.categoriesPage.deleteModal.heading}
           </DialogTitle>
           <DialogDescription className="text-center text-sm text-gray-600 mt-2">
-            Are you sure you want to delete{" "}
-            <b className="text-[#D72323]">{itemName}</b>? This action cannot be
-            undone.
+            {translate.admin.categoriesPage.deleteModal.title1stPart}
+            <b className="text-[#D72323]">{itemName}</b>?{" "}
+            {translate.admin.categoriesPage.deleteModal.title2ndPart}
           </DialogDescription>
         </DialogHeader>
 
@@ -47,14 +48,14 @@ const DeleteConfirmationModal = ({
             onClick={() => setIsOpen(false)}
             className="px-4 py-2 w-full sm:w-auto bg-gray-200 text-gray-700 rounded-md font-medium hover:bg-gray-300 transition duration-200"
           >
-            Cancel
+            {translate.admin.categoriesPage.deleteModal.buttons.cancel}
           </button>
           <button
             type="button"
             onClick={handleDelete}
             className="px-4 py-2 w-full sm:w-auto text-white bg-[#D72323] rounded-md font-medium hover:bg-[#b71b1b] transition duration-200"
           >
-            Delete
+            {translate.admin.categoriesPage.deleteModal.buttons.delete}
           </button>
         </div>
       </DialogContent>

@@ -12,6 +12,7 @@ import { useCreateProduct } from "@/hooks/product.hooks";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TCategory } from "@/types";
+import translate from "@/utils/translate";
 
 const AddProduct = () => {
   const { data } = useGetCurrentSaller();
@@ -70,7 +71,9 @@ const AddProduct = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Add Product</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        {translate.sallerDashboard.addProductPage.heading}
+      </h1>
       <form
         onSubmit={handleAddProduct}
         className="flex flex-col md:flex-row gap-8"
@@ -78,20 +81,20 @@ const AddProduct = () => {
         <div className="w-full md:w-1/2">
           <ImageUpload
             name="productImage"
-            label="Upload Product Image"
+            label={translate.sallerDashboard.addProductPage.labels.image}
             setUploadedFile={setImage}
             uploadedFile={image}
           />
         </div>
         <div className="w-full md:w-1/2">
-          <Label>Name</Label>
+          <Label>{translate.sallerDashboard.addProductPage.labels.name}</Label>
           <Input
             name="name"
             required
             type="text"
             className="mt-1 mb-2 border-gray-300"
           />
-          <Label>Price</Label>
+          <Label>{translate.sallerDashboard.addProductPage.labels.price}</Label>
           <Input
             name="price"
             required
@@ -105,9 +108,13 @@ const AddProduct = () => {
                 setPrice(value);
               }
             }}
-            placeholder="Enter price (e.g., 20.45)"
+            placeholder={
+              translate.sallerDashboard.addProductPage.placeholder.price
+            }
           />
-          <Label>Category</Label>
+          <Label>
+            {translate.sallerDashboard.addProductPage.labels.category}
+          </Label>
           <Select
             isMulti
             name="category"
@@ -118,13 +125,17 @@ const AddProduct = () => {
             value={selectedCategory}
             onChange={(select) => {
               if (select.length > 2) {
-                toast.error("You can select maximum 2 category!");
+                toast.error(
+                  translate.sallerDashboard.addProductPage.selectError
+                );
               } else {
                 setSelectedCategory(select as []);
               }
             }}
           />
-          <Label>Description</Label>
+          <Label>
+            {translate.sallerDashboard.addProductPage.labels.description}
+          </Label>
           <Textarea
             required
             name="description"
@@ -132,7 +143,7 @@ const AddProduct = () => {
             rows={7}
           />
           <Button disabled={isPending} type="submit" className="mt-2 w-full">
-            Add Product
+            {translate.sallerDashboard.addProductPage.buttonText}
           </Button>
         </div>
       </form>

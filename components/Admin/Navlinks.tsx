@@ -8,6 +8,7 @@ import { BiCategory, BiLogoProductHunt } from "react-icons/bi";
 import { MdDashboard, MdOutlineLogout } from "react-icons/md";
 import { TiStopwatch } from "react-icons/ti";
 import { FaCodePullRequest } from "react-icons/fa6";
+import translate from "@/utils/translate";
 
 const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
   const { setIsLoading } = useUser();
@@ -37,7 +38,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <MdDashboard className="h-5 w-5" />
-          Dashboard
+          {translate.admin.routes.dashboard}
         </Link>
         <Link
           href="/admin/categories"
@@ -48,7 +49,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <BiCategory className="h-5 w-5" />
-          Categories
+          {translate.admin.routes.categories}
         </Link>
         <Link
           href="/admin/sallers"
@@ -59,7 +60,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <Users className="h-5 w-5" />
-          Sallers
+          {translate.admin.routes.sallers}
         </Link>
         <Link
           href="/admin/products"
@@ -70,7 +71,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <BiLogoProductHunt className="h-5 w-5" />
-          Products
+          {translate.admin.routes.products}
         </Link>
         <Link
           href="/admin/subscription-check"
@@ -81,7 +82,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <TiStopwatch className="h-5 w-5" />
-          Subscription-Check
+          {translate.admin.routes.subscriptionCheck}
         </Link>
         <Link
           href="/admin/request"
@@ -92,7 +93,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
           onClick={onLinkClick}
         >
           <FaCodePullRequest className="h-5 w-5" />
-          Requests
+          {translate.admin.routes.requests}
         </Link>
       </div>
       <button
@@ -103,7 +104,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
         className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
       >
         <MdOutlineLogout className="h-5 w-5" />
-        Logout
+        {translate.admin.routes.logout}
       </button>
     </nav>
   );

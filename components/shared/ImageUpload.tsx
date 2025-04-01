@@ -3,6 +3,7 @@ import { Label } from "../ui/label";
 import { FiX } from "react-icons/fi";
 import { UploadCloud } from "lucide-react";
 import Image from "next/image";
+import translate from "@/utils/translate";
 
 type TProps = {
   name: string;
@@ -58,7 +59,9 @@ const ImageUpload = ({
           className="flex flex-col items-center justify-center w-full h-[300px] border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
         >
           <UploadCloud className="text-gray-400 w-12 h-12 mb-2" />
-          <span className="text-sm text-gray-600">Click to browse file</span>
+          <span className="text-sm text-gray-600">
+            {translate.sallerDashboard.addProductPage.placeholder.image}
+          </span>
           <span className="text-xs text-gray-500">JPG, JPEG, or PNG</span>
           <input
             name="image"

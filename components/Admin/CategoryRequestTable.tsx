@@ -13,7 +13,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { PiSlidersHorizontal } from "react-icons/pi";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -25,14 +24,9 @@ import {
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { TUser } from "@/types";
 import { useGetAllCategoryRequest } from "@/hooks/category.hooks";
+import translate from "@/utils/translate";
 
 type TRequest = {
   name: string;
@@ -59,7 +53,7 @@ function CategoryRequestTable() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            category
+            {translate.admin.requestsPage.tableHeadings.category}
             <ArrowUpDown />
           </Button>
         );
@@ -74,7 +68,7 @@ function CategoryRequestTable() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Saller Email
+            {translate.admin.requestsPage.tableHeadings.sallerEmail}
             <ArrowUpDown />
           </Button>
         );
@@ -89,7 +83,7 @@ function CategoryRequestTable() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Have Product
+            {translate.admin.requestsPage.tableHeadings.haveProduct}
             <ArrowUpDown />
           </Button>
         );
@@ -106,7 +100,7 @@ function CategoryRequestTable() {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Created At
+            {translate.admin.requestsPage.tableHeadings.createdAt}
             <ArrowUpDown />
           </Button>
         );
@@ -142,10 +136,13 @@ function CategoryRequestTable() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">Request for Category</h1>
+      <h1 className="text-2xl font-semibold">
+        {" "}
+        {translate.admin.requestsPage.heading}
+      </h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
         <Input
-          placeholder="Filter Category..."
+          placeholder={translate.admin.requestsPage.searchPlaceholder}
           value={
             (table?.getColumn("category")?.getFilterValue() as string) ?? ""
           }
@@ -157,35 +154,9 @@ function CategoryRequestTable() {
         <div className="flex items-center flex-row-reverse md:flex-row justify-between md:justify-start gap-2 mt-4 md:mt-0">
           <Link href="/admin/categories">
             <button className="text-sm bg-red py-2 rounded px-5 bg-blue-600 text-white ">
-              Add Category
+              {translate.admin.requestsPage.addButton}
             </button>
           </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                View <PiSlidersHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
       <div className="rounded-md border mt-5">
@@ -241,10 +212,6 @@ function CategoryRequestTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel()?.rows?.length} of{" "}
-          {table.getFilteredRowModel()?.rows?.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
@@ -252,7 +219,7 @@ function CategoryRequestTable() {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translate.admin.requestsPage.buttons.previous}
           </Button>
           <Button
             variant="outline"
@@ -260,7 +227,7 @@ function CategoryRequestTable() {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translate.admin.requestsPage.buttons.next}
           </Button>
         </div>
       </div>

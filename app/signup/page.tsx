@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import SignUpForm from "@/components/Form/SignUpForm";
+import translate from "@/utils/translate";
 
 interface Props {
   searchParams: Record<string, string | string[]>;
@@ -35,10 +36,10 @@ const SignupForm = ({ searchParams }: Props) => {
         {/* Heading */}
         <div className="text-center mb-6">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
-            Sign up
+            {translate.signUp.title}
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Create an account to continue
+            {translate.signUp.subtitle}
           </p>
         </div>
 
@@ -47,9 +48,12 @@ const SignupForm = ({ searchParams }: Props) => {
 
         {/* Redirect to Login */}
         <p className="mt-4 text-center text-sm text-gray-700 dark:text-gray-400">
-          Already have an account?{" "}
+          {translate.signUp.footer.text}
           <Link href={`/signin${getRedirectParams()}`}>
-            <span className="text-purple-500 hover:underline">Login</span>
+            <span className="text-purple-500 hover:underline">
+              {" "}
+              {translate.signUp.footer.link}
+            </span>
           </Link>
         </p>
       </div>

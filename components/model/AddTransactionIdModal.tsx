@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAddTransactionId } from "@/hooks/auth.hooks";
+import translate from "@/utils/translate";
 import { Plus } from "lucide-react";
 import { FormEvent } from "react";
 
@@ -39,11 +40,10 @@ const AddTransactionIdModal = ({ isOpen, setIsOpen, refetch, id }: Props) => {
       <DialogContent className="font-plus max-w-[525px] bg-white p-6 rounded-lg shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-gray-800">
-            Add Transaction ID
+            {translate.admin.subscriptionCheck.modal.heading}
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-600 mt-2">
-            Please enter the transaction ID carefully. Once submitted, this ID
-            cannot be changed.
+            {translate.admin.subscriptionCheck.modal.title}
           </DialogDescription>
         </DialogHeader>
 
@@ -53,14 +53,16 @@ const AddTransactionIdModal = ({ isOpen, setIsOpen, refetch, id }: Props) => {
             htmlFor="transaction-id"
             className="block text-sm font-medium text-gray-700"
           >
-            Transaction ID
+            {translate.admin.subscriptionCheck.modal.inputLabel}
           </label>
           <input
             id="transaction-id"
             name="transactionId"
             type="number"
             maxLength={6}
-            placeholder="Enter transaction ID"
+            placeholder={
+              translate.admin.subscriptionCheck.modal.inputPlaceholder
+            }
             className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-[#D72323] focus:border-[#D72323] transition duration-150 ease-in-out"
           />
           <div className="flex justify-center mt-3">
@@ -79,7 +81,7 @@ const AddTransactionIdModal = ({ isOpen, setIsOpen, refetch, id }: Props) => {
                 </>
               ) : (
                 <>
-                  <Plus /> Add
+                  <Plus /> {translate.admin.subscriptionCheck.modal.buttonText}
                 </>
               )}
             </button>
