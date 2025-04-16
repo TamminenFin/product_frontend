@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Provider from "@/lib/Provider";
-import Favicon from "../assets/favicon.ico"
 
 // Corrected font import
 const poppins = Poppins({
