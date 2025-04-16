@@ -1,18 +1,20 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "../ui/input";
-import { Search } from "lucide-react";
-import { useUser } from "@/lib/user.provider";
-import Link from "next/link";
-import { useGetCurrentSaller } from "@/hooks/auth.hooks";
-import PendingUserModel from "../model/PendingUserModel";
-import SubscriptionEndMessage from "../model/SubscriptionEndMessage";
-import { Citys } from "@/types/Citys";
-import { MultiValue } from "react-select";
-import Select from "react-select";
-import translate from "@/utils/translate";
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { Input } from '../ui/input';
+import { Search } from 'lucide-react';
+import { useUser } from '@/lib/user.provider';
+import Link from 'next/link';
+import { useGetCurrentSaller } from '@/hooks/auth.hooks';
+import PendingUserModel from '../model/PendingUserModel';
+import SubscriptionEndMessage from '../model/SubscriptionEndMessage';
+import { Citys } from '@/types/Citys';
+import { MultiValue } from 'react-select';
+import Select from 'react-select';
+import translate from '@/utils/translate';
+import Logo from '../../assets/lastiendas_logo.png';
 
 type OptionType = {
   value: string;
@@ -27,19 +29,19 @@ const Navbar = () => {
   const [pendingModalOpen, setPendingModalOpen] = useState(false);
   const [endModalOpen, setEndModalOpen] = useState(false);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const selectedLocations = searchParams.getAll("location[]") || [];
+  const selectedLocations = searchParams.getAll('location[]') || [];
 
   // Handle location change
   const handleLocationChange = (selectedOptions: MultiValue<OptionType>) => {
     const params = new URLSearchParams(searchParams.toString());
 
     // Remove existing location params
-    params.delete("location[]");
+    params.delete('location[]');
 
     selectedOptions.forEach((option) => {
-      params.append("location[]", option.value);
+      params.append('location[]', option.value);
     });
 
     router.push(`?${params.toString()}`);
@@ -47,7 +49,7 @@ const Navbar = () => {
 
   // Navigate to the dashboard or show appropriate modal if conditions are met
   const handleNavigate = () => {
-    if (userInfo?.data?.status === "Pending") {
+    if (userInfo?.data?.status === 'Pending') {
       setPendingModalOpen(true);
       return;
     }
@@ -55,7 +57,7 @@ const Navbar = () => {
       setEndModalOpen(true);
       return;
     }
-    router.push(user?.role === "admin" ? "/admin" : "/dashboard");
+    router.push(user?.role === 'admin' ? '/admin' : '/dashboard');
   };
 
   // Update the search term and searchParams in URL
@@ -69,9 +71,9 @@ const Navbar = () => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (searchTerm) {
-      params.set("searchTerms", searchTerm);
+      params.set('searchTerms', searchTerm);
     } else {
-      params.delete("searchTerms");
+      params.delete('searchTerms');
     }
 
     // Update the URL with the search term
@@ -84,17 +86,14 @@ const Navbar = () => {
   })).sort((a, b) => a.value.localeCompare(b.value));
 
   return (
-    <nav className="">
-      <div className="flex flex-wrap gap-4 items-center justify-between">
-        <Link
-          href="/"
-          className="text-xl sm:text-2xl font-bold text-purple-600"
-        >
-          {translate.home.logo}
+    <nav className=''>
+      <div className='flex flex-wrap gap-4 items-center justify-between'>
+        <Link href='/'>
+          <Image src={Logo} alt='Logo' width={140} height={40} />
         </Link>
 
         {/* Location Dropdown */}
-        <div className="hidden sm:block">
+        <div className='hidden sm:block'>
           <Select
             options={locationOptions}
             isMulti
@@ -102,24 +101,24 @@ const Navbar = () => {
               selectedLocations.includes(option.value)
             )}
             onChange={handleLocationChange}
-            placeholder="Select Location"
-            className="w-60 text-[12px]"
+            placeholder='Select Location'
+            className='w-60 text-[12px]'
           />
         </div>
 
         {/* Search Input */}
-        <div className="hidden sm:block flex-1">
-          <div className="relative">
+        <div className='hidden sm:block flex-1'>
+          <div className='relative'>
             <Input
-              type="text"
+              type='text'
               placeholder={translate.home.searchPlaceholder}
-              className="pl-10"
+              className='pl-10'
               value={searchTerm}
               onChange={handleSearchChange}
             />
             <Search
               size={20}
-              className="absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400"
+              className='absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400'
             />
           </div>
         </div>
@@ -128,20 +127,20 @@ const Navbar = () => {
         {user?.email ? (
           <button
             onClick={handleNavigate}
-            className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm"
+            className='bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm'
           >
             {translate.home.goToDashboard}
           </button>
         ) : (
-          <Link href={"/signin"}>
-            <button className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm">
+          <Link href={'/signin'}>
+            <button className='bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm'>
               {translate.home.goToLoginButton}
             </button>
           </Link>
         )}
 
         {/* Mobile Search and Location Dropdown */}
-        <div className="flex flex-col items-center gap-2 w-full sm:hidden">
+        <div className='flex flex-col items-center gap-2 w-full sm:hidden'>
           <Select
             options={locationOptions}
             isMulti
@@ -150,19 +149,19 @@ const Navbar = () => {
             )}
             onChange={handleLocationChange}
             placeholder={translate.home.selectCity}
-            className="text-[10px] w-full"
+            className='text-[10px] w-full'
           />
-          <div className="relative w-full">
+          <div className='relative w-full'>
             <input
-              type="text"
+              type='text'
               placeholder={translate.home.searchPlaceholder}
               value={searchTerm}
               onChange={handleSearchChange}
-              className="pl-7 focus:ring-2 focus:ring-blue-500 focus:outline-none sm:focus:ring-purple-500 placeholder:text-xs w-full border-gray-300 py-1.5 rounded text-xs border"
+              className='pl-7 focus:ring-2 focus:ring-blue-500 focus:outline-none sm:focus:ring-purple-500 placeholder:text-xs w-full border-gray-300 py-1.5 rounded text-xs border'
             />
             <Search
               size={14}
-              className="absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400"
+              className='absolute top-2/4 left-3 transform -translate-y-2/4 text-gray-400'
             />
           </div>
         </div>
