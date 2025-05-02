@@ -34,7 +34,16 @@ const AddProduct = () => {
 
   const handleAddProduct = async (e: FormEvent) => {
     e.preventDefault();
-    const loadingToast = toast.loading("Please wait,Product is creating...");
+
+    // Check for image before showing loading toast
+    if (!image) {
+      return toast.error("Please upload a product image.");
+    }
+
+    const loadingToast = toast.loading(
+      "Please wait, product is being created..."
+    );
+
     const formElement = e.target as HTMLFormElement;
     const formData = new FormData(formElement);
 
@@ -45,9 +54,7 @@ const AddProduct = () => {
       name: cat.label,
     }));
 
-    if (image) {
-      formData.append("image", image);
-    }
+    formData.append("image", image);
     formData.append(
       "data",
       JSON.stringify({
@@ -62,14 +69,18 @@ const AddProduct = () => {
 
     createProduct(formData, {
       onSuccess: (data) => {
-        console.log(data);
+        toast.dismiss(loadingToast);
         if (data?.success) {
-          toast.dismiss(loadingToast);
+          toast.success("Product created successfully!");
           route.push("/dashboard/product");
+        } else {
+          toast.error("Something went wrong. Please try again.");
         }
       },
-      onError: () => {
+      onError: (err) => {
         toast.dismiss(loadingToast);
+        toast.error("Failed to create product. Please try again.");
+        console.error(err);
       },
     });
   };
@@ -114,8 +125,8 @@ const AddProduct = () => {
               <SelectGroup>
                 <SelectLabel>Price Type</SelectLabel>
                 <SelectItem value="Normal">Normal</SelectItem>
-                <SelectItem value="Per Hour">Per Hour</SelectItem>
-                <SelectItem value="Par Day">Par Day</SelectItem>
+                <SelectItem value="Per Hour">por hora</SelectItem>
+                <SelectItem value="Par Day">por día</SelectItem>
               </SelectGroup>
             </SelectContent>
           </ShadcnSelect>

@@ -36,9 +36,9 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           <div className="text-xl sm:text-2xl font-semibold text-gray-800 mt-4">
             S/‎{data?.data?.price}{" "}
             {data?.data?.priceType === "Per Hour"
-              ? "per hours"
+              ? "por hora"
               : data?.data?.priceType === "Par Day"
-              ? "Par Day"
+              ? "por día"
               : ""}
           </div>
 
