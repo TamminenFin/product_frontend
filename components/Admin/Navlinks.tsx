@@ -27,7 +27,7 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
       : "text-gray-700 dark:text-gray-400";
 
   return (
-    <nav className="flex  h-[70vh] md:h-[calc(100vh-95px)] flex-col justify-between">
+    <nav className="flex  h-[70vh] md:h-[calc(100vh-140px)] flex-col justify-between">
       <div className="space-y-1">
         <Link
           href="/admin"

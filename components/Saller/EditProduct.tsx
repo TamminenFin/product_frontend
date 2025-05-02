@@ -47,7 +47,9 @@ const EditProduct = ({ id }: { id: string }) => {
     const price = formData.get("price") as string;
     const description = formData.get("description") as string;
 
-    const category = selectedCategory.map((cat) => cat.value);
+    const category = selectedCategory.map((cat) => ({
+      name: cat.value,
+    }));
 
     if (image instanceof File) {
       formData.append("image", image);
@@ -61,6 +63,7 @@ const EditProduct = ({ id }: { id: string }) => {
 
     updateProduct(payload, {
       onSuccess: (data) => {
+        console.log(data);
         if (data?.success) {
           toast.dismiss(loadingToast);
           route.push("/dashboard/product");

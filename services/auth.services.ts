@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import axiosInstance from "@/lib/axiosInstence";
 import { TCreateUser, TSignInUser, TSubscription } from "@/types";
@@ -180,5 +181,16 @@ export const logoutUser = async () => {
     cookies().delete("refreshToken");
   } catch (err: any) {
     return err;
+  }
+};
+
+export const dealeteASaller = async (payload: { sallerId: string }) => {
+  try {
+    const { data } = await axiosInstance.delete(
+      `/auth/saller/remove/${payload.sallerId}`
+    );
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
   }
 };

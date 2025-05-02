@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Eye } from "lucide-react";
+import { ArrowUpDown, Edit, Eye, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,9 +26,10 @@ import {
 import { Input } from "../ui/input";
 import Link from "next/link";
 import { TSaller } from "@/types";
-import { useGetAllSaller } from "@/hooks/auth.hooks";
+import { useGetAllSaller, useRemoveSaller } from "@/hooks/auth.hooks";
 import SubscriptionModal from "../model/SubscriptionModal";
 import translate from "@/utils/translate";
+import DeleteUserModal from "../model/DeleteUserModal";
 
 function AllSallers() {
   const { data, isLoading, refetch } = useGetAllSaller();
@@ -42,6 +43,24 @@ function AllSallers() {
     startDate: string;
     endDate: string;
   } | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [userName, setUserName] = useState<{
+    userName: string;
+    id: string;
+  } | null>(null);
+  const { mutate } = useRemoveSaller();
+
+  const handleDelete = () => {
+    mutate(
+      { sallerId: userName?.id as string },
+      {
+        onSuccess: () => {
+          refetch();
+          setIsDeleteModalOpen(false);
+        },
+      }
+    );
+  };
 
   const columns: ColumnDef<TSaller>[] = [
     {
@@ -184,6 +203,19 @@ function AllSallers() {
                 <Edit />
               </Button>
             )}
+            <Button
+              onClick={() => {
+                setIsDeleteModalOpen(true);
+                setUserName({
+                  userName: row.original.name,
+                  id: row.original._id,
+                });
+              }}
+              variant="outline"
+              className="rounded-r-none focus:z-10"
+            >
+              <Trash />
+            </Button>
           </div>
         );
       },
@@ -309,6 +341,14 @@ function AllSallers() {
           sallerId={selectedId}
           refetch={refetch}
           dates={dates}
+        />
+      )}
+      {userName && (
+        <DeleteUserModal
+          handleDelete={handleDelete}
+          isOpen={isDeleteModalOpen}
+          setIsOpen={setIsDeleteModalOpen}
+          itemName={userName.userName}
         />
       )}
     </div>

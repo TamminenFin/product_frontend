@@ -21,7 +21,7 @@ export default function Product() {
     const res = await fetch(
       `${
         process.env.NEXT_PUBLIC_URL
-      }/api/v1/product?page=${pageParam}&limit=3&location=${
+      }/api/v1/product?page=${pageParam}&limit=20&location=${
         selectedLocation || ""
       }&category=${selectedCategory || ""}&searchTerms=${searchTerms || ""}`
     );

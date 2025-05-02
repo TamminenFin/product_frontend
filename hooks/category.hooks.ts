@@ -35,7 +35,11 @@ export const useDeleteCategory = () => {
     mutationKey: ["DELETE_CATEGORY"],
     mutationFn: async (id: string) => await deleteCategory(id),
     onSuccess: (data) => {
-      toast.success(data?.message);
+      if (data.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data.message);
+      }
     },
     onError: (error) => {
       toast.error(error.message);

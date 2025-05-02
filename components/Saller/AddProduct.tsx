@@ -13,6 +13,15 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TCategory } from "@/types";
 import translate from "@/utils/translate";
+import {
+  Select as ShadcnSelect,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AddProduct = () => {
   const { data } = useGetCurrentSaller();
@@ -21,6 +30,7 @@ const AddProduct = () => {
   const route = useRouter();
   const [price, setPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [priceType, setPriceType] = useState("Normal");
 
   const handleAddProduct = async (e: FormEvent) => {
     e.preventDefault();
@@ -46,6 +56,7 @@ const AddProduct = () => {
         location,
         category,
         description,
+        priceType,
       })
     );
 
@@ -94,6 +105,20 @@ const AddProduct = () => {
             type="text"
             className="mt-1 mb-2 border-gray-300"
           />
+          <Label>Select price type</Label>
+          <ShadcnSelect required value={priceType} onValueChange={setPriceType}>
+            <SelectTrigger className="w-full mb-2">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Price Type</SelectLabel>
+                <SelectItem value="Normal">Normal</SelectItem>
+                <SelectItem value="Per Hour">Per Hour</SelectItem>
+                <SelectItem value="Par Day">Par Day</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </ShadcnSelect>
           <Label>{translate.sallerDashboard.addProductPage.labels.price}</Label>
           <Input
             name="price"

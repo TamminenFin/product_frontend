@@ -2,10 +2,11 @@
 import Navlinks from "@/components/Admin/Navlinks";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import translate from "@/utils/translate";
-import { MenuIcon, MountainIcon } from "lucide-react";
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import React, { ReactNode, useState } from "react";
+import logo from "../../assets/lastiendas_logo.png";
+import Image from "next/image";
 
 const SideBarAdmin = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -18,13 +19,8 @@ const SideBarAdmin = ({ children }: { children: ReactNode }) => {
       <div className="hidden lg:block lg:w-64 lg:sticky lg:left-0 lg:top-0 lg:shrink-0 lg:border-r lg:bg-gray-100 dark:lg:bg-gray-800 h-screen">
         <div className="flex h-full flex-col justify-between py-6 px-4">
           <div className="space-y-6">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-bold"
-              prefetch={false}
-            >
-              <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">{translate.home.logo}</span>
+            <Link href="/">
+              <Image src={logo} alt="Logo" width={140} height={40} />
             </Link>
             <Navlinks onLinkClick={handleSidebarClose} />
           </div>
@@ -50,13 +46,8 @@ const SideBarAdmin = ({ children }: { children: ReactNode }) => {
                 </div>
               </SheetContent>
             </Sheet>
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-bold"
-              prefetch={false}
-            >
-              <MountainIcon className="h-6 w-6" />
-              <span className="text-lg">{translate.home.logo}</span>
+            <Link href="/">
+              <Image src={logo} alt="Logo" width={140} height={40} />
             </Link>
           </div>
         </header>

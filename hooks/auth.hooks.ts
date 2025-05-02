@@ -3,6 +3,7 @@ import {
   addCategoryToSaller,
   addTransactionId,
   createUser,
+  dealeteASaller,
   getAllRequestForSallers,
   getAllSallers,
   getCurrentSaller,
@@ -136,5 +137,22 @@ export const useGetSubscriptionSaller = () => {
   return useQuery({
     queryKey: ["DEADLINE_SALLER"],
     queryFn: async () => await getDeadlineComingSallers(),
+  });
+};
+
+export const useRemoveSaller = () => {
+  return useMutation({
+    mutationKey: ["DELETE_SALLER"],
+    mutationFn: async (payload: { sallerId: string }) =>
+      await dealeteASaller(payload),
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message, {
+          className: "bg-red-600",
+        });
+      }
+    },
   });
 };
