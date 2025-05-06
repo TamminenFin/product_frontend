@@ -9,8 +9,18 @@ export const createUser = async (userData: TCreateUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signup", userData);
     if (data?.success) {
-      (await cookies()).set("accessToken", data?.data?.accessToken);
-      (await cookies()).set("refreshToken", data?.data?.refreshToken);
+      (await cookies()).set("accessToken", data?.data?.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 1500,
+      });
+      (await cookies()).set("refreshToken", data?.data?.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 365 * 24 * 60 * 60 * 1000,
+      });
     }
     return data;
   } catch (err: any) {
@@ -49,8 +59,18 @@ export const signInUser = async (payload: TSignInUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signin", payload);
     if (data?.success) {
-      (await cookies()).set("accessToken", data?.data?.accessToken);
-      (await cookies()).set("refreshToken", data?.data?.refreshToken);
+      (await cookies()).set("accessToken", data?.data?.accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 1500,
+      });
+      (await cookies()).set("refreshToken", data?.data?.refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 365 * 24 * 60 * 60 * 1000,
+      });
     }
     return data;
   } catch (err: any) {

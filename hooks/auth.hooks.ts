@@ -127,14 +127,14 @@ export const useGetCurrentSaller = () => {
 
 export const useGetAllSaller = () => {
   return useQuery({
-    queryKey: ["CURRENT_SALLER"],
+    queryKey: ["ALL_SALLER_3"],
     queryFn: async () => await getAllSallers(),
   });
 };
 
 export const useGetAllSallerRequest = () => {
   return useQuery({
-    queryKey: ["CURRENT_SALLER"],
+    queryKey: ["ALL_SALLER___________"],
     queryFn: async () => await getAllRequestForSallers(),
   });
 };
