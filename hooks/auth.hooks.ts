@@ -118,10 +118,11 @@ export const useAddTransactionId = () => {
   });
 };
 
-export const useGetCurrentSaller = (id: string) => {
+export const useGetCurrentSaller = (id: string, options = {}) => {
   return useQuery({
-    queryKey: ["CURRENT_SALLER"],
+    queryKey: ["CURRENT_SALLER", id],
     queryFn: async () => await getCurrentSaller(id),
+    ...options,
   });
 };
 

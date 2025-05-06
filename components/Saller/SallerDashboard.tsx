@@ -8,19 +8,21 @@ import { useUser } from "@/lib/user.provider";
 const SallerDashboard = () => {
   const { user } = useUser();
   const { data, isLoading } = useGetDashboardData();
-  const { data: sallerInfo, isLoading: IsSallerLoading } = useGetCurrentSaller(
-    user?._id as string
+
+  // Only run this query if user._id exists
+  const { data: sallerInfo, isLoading: isSallerLoading } = useGetCurrentSaller(
+    user?._id ?? "",
+    {
+      enabled: !!user?._id,
+    }
   );
-  console.log({ sallerInfo });
-  console.log({ data });
-  console.log({ user });
-  if (isLoading || IsSallerLoading) return <div>Loading...</div>;
+
+  console.log({ user, sallerInfo, data });
+  if (isLoading || isSallerLoading) return <div>Loading...</div>;
 
   const todaysDate = new Date();
   const subscriptionEndDate = new Date(sallerInfo?.data?.subEndDate);
-
   const timeDefference = subscriptionEndDate.getTime() - todaysDate.getTime();
-
   const dayCount = timeDefference / (1000 * 60 * 60 * 24);
 
   return (
@@ -34,7 +36,6 @@ const SallerDashboard = () => {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div className="text-muted-foreground">
-              {" "}
               {translate.sallerDashboard.dashboardPage.cardTitels.totalProduct}
             </div>
           </div>
@@ -45,7 +46,6 @@ const SallerDashboard = () => {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div className="text-muted-foreground">
-              {" "}
               {translate.sallerDashboard.dashboardPage.cardTitels.totalCategory}
             </div>
           </div>
