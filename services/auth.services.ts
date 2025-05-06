@@ -9,13 +9,13 @@ export const createUser = async (userData: TCreateUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signup", userData);
     if (data?.success) {
-      cookies().set("accessToken", data?.data?.accessToken, {
+      (await cookies()).set("accessToken", data?.data?.accessToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        maxAge: 300,
+        maxAge: 1500,
       });
-      cookies().set("refreshToken", data?.data?.refreshToken, {
+      (await cookies()).set("refreshToken", data?.data?.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
@@ -30,7 +30,7 @@ export const createUser = async (userData: TCreateUser) => {
 
 export const getNewAccessToken = async () => {
   try {
-    const refreshToken = cookies().get("refreshToken")?.value;
+    const refreshToken = (await cookies()).get("refreshToken")?.value;
     const { data } = await axiosInstance({
       url: "/auth/refresh-token",
       method: "POST",
@@ -59,13 +59,13 @@ export const signInUser = async (payload: TSignInUser) => {
   try {
     const { data } = await axiosInstance.post("/auth/signin", payload);
     if (data?.success) {
-      cookies().set("accessToken", data?.data?.accessToken, {
+      (await cookies()).set("accessToken", data?.data?.accessToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        maxAge: 300,
+        maxAge: 1500,
       });
-      cookies().set("refreshToken", data?.data?.refreshToken, {
+      (await cookies()).set("refreshToken", data?.data?.refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
