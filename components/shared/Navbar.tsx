@@ -23,7 +23,7 @@ type OptionType = {
 
 const Navbar = () => {
   const { user } = useUser();
-  const { data: userInfo } = useGetCurrentSaller();
+  const { data: userInfo } = useGetCurrentSaller(user?._id as string);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [pendingModalOpen, setPendingModalOpen] = useState(false);

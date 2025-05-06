@@ -13,12 +13,15 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { TCategory } from "@/types";
 import translate from "@/utils/translate";
+import { useUser } from "@/lib/user.provider";
 
 const EditProduct = ({ id }: { id: string }) => {
+  const { user } = useUser();
   const { data, isLoading } = useGetSingleProduct(id);
   const [image, setImage] = useState<File | string | null>(null);
-  const { data: sallerInfo, isLoading: isSallerLoading } =
-    useGetCurrentSaller();
+  const { data: sallerInfo, isLoading: isSallerLoading } = useGetCurrentSaller(
+    user?._id as string
+  );
   const { mutate: updateProduct, isPending: isProductUpdating } =
     useUpdateProduct();
   const route = useRouter();

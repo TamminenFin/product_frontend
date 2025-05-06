@@ -127,9 +127,9 @@ export const acceptRequest = async (payload: TSubscription) => {
   }
 };
 
-export const getCurrentSaller = async () => {
+export const getCurrentSaller = async (id: string) => {
   try {
-    const { data } = await axiosInstance.get(`/auth/current-saller`);
+    const { data } = await axiosInstance.get(`/auth/current-saller/${id}`);
     return data;
   } catch (err: any) {
     return err?.response?.data;

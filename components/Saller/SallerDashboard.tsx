@@ -3,13 +3,17 @@ import { useGetDashboardData } from "@/hooks/dashboard.hooks";
 import { Card } from "../ui/card";
 import { useGetCurrentSaller } from "@/hooks/auth.hooks";
 import translate from "@/utils/translate";
+import { useUser } from "@/lib/user.provider";
 
 const SallerDashboard = () => {
+  const { user } = useUser();
   const { data, isLoading } = useGetDashboardData();
-  const { data: sallerInfo, isLoading: IsSallerLoading } =
-    useGetCurrentSaller();
+  const { data: sallerInfo, isLoading: IsSallerLoading } = useGetCurrentSaller(
+    user?._id as string
+  );
   console.log({ sallerInfo });
   console.log({ data });
+  console.log({ user });
   if (isLoading || IsSallerLoading) return <div>Loading...</div>;
 
   const todaysDate = new Date();

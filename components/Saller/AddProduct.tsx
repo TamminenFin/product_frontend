@@ -22,9 +22,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUser } from "@/lib/user.provider";
 
 const AddProduct = () => {
-  const { data } = useGetCurrentSaller();
+  const { user } = useUser();
+  const { data } = useGetCurrentSaller(user?._id as string);
   const [image, setImage] = useState<File | string | null>(null);
   const { mutate: createProduct, isPending } = useCreateProduct();
   const route = useRouter();

@@ -5,6 +5,7 @@ import {
   useGetCurrentSaller,
 } from "@/hooks/auth.hooks";
 import { useGeatAllCategory } from "@/hooks/category.hooks";
+import { useUser } from "@/lib/user.provider";
 import { TCategory } from "@/types";
 import translate from "@/utils/translate";
 import { useEffect, useState } from "react";
@@ -12,9 +13,10 @@ import { useEffect, useState } from "react";
 type TSelectCategory = { name: string; status: string }[];
 
 const MyCategory = () => {
+  const { user } = useUser();
   const { data, refetch } = useGeatAllCategory();
   const [selectCategory, setSelectCategory] = useState<TSelectCategory>([]);
-  const { data: sallerInfo } = useGetCurrentSaller();
+  const { data: sallerInfo } = useGetCurrentSaller(user?._id as string);
   const { mutate: addCategory, isPending } = useAddCategoryToSaller();
 
   useEffect(() => {
