@@ -2,59 +2,53 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getCurrentUser } from "./services/auth.services";
 
-const authRoute = ["/signin", "/signup"];
+// ✅ Publicly accessible routes
+const AuthRoutes = ["/signin", "/signup"];
 
-const userRoutes = [
-  "/dashboard",
-  "/dashboard/product",
-  "/dashboard/product/add",
-  "/dashboard/my-category",
-  "/dashboard/category-request",
-];
+// ✅ Role-based route access
+const roleBasedRoutes = {
+  saller: [/^\/dashboard/],
+  admin: [/^\/admin/],
+} as const;
 
-const dynamicUserRoutes = [
-  "/dashboard/product/edit/", // This will match any product edit path with an ID
-];
+type Role = keyof typeof roleBasedRoutes;
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  let user = await getCurrentUser();
+  const { pathname, searchParams } = request.nextUrl;
+  const user = await getCurrentUser(); // Should parse cookies or headers internally
 
+  console.log(user);
+
+  // ✅ Public route handling (no user)
   if (!user) {
-    if (authRoute.includes(pathname)) {
-      return NextResponse.next();
-    } else {
-      return NextResponse.redirect(new URL("/signin", request.url));
-    }
-  }
+    const isAuthRoute = AuthRoutes.some((route) => pathname.startsWith(route));
 
-  if (user?.role) {
-    if (user?.role === "saller") {
-      if (
-        userRoutes.includes(pathname) ||
-        dynamicUserRoutes.some((route) => pathname.startsWith(route))
-      ) {
-        return NextResponse.next();
-      } else {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
-    }
-    if (user?.role === "admin") {
+    if (isAuthRoute) {
       return NextResponse.next();
     }
+
+    // Redirect to /signin with intended redirect path
+    const redirectUrl = new URL("/signin", request.url);
+    const redirectPath =
+      pathname + (searchParams.toString() ? `?${searchParams}` : "");
+    redirectUrl.searchParams.set("redirect", redirectPath);
+
+    return NextResponse.redirect(redirectUrl);
   }
 
+  // ✅ Authenticated route handling
+  const role = user.role as Role;
+  const allowedRoutes = roleBasedRoutes[role];
+
+  if (allowedRoutes && allowedRoutes.some((regex) => regex.test(pathname))) {
+    return NextResponse.next();
+  }
+
+  // ❌ Unauthorized role access → redirect to home
   return NextResponse.redirect(new URL("/", request.url));
 }
 
-// See "Matching Paths" below to learn more
+// ✅ Define the matcher for middleware to apply only on relevant paths
 export const config = {
-  matcher: [
-    "/dashboard",
-    "/admin",
-    "/signin",
-    "/signup",
-    "/admin/:path*",
-    "/dashboard/:path*",
-  ],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/signin", "/signup"],
 };

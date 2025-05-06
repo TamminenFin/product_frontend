@@ -20,11 +20,16 @@ export const useUserRegistation = () => {
   return useMutation({
     mutationKey: ["USER_REGISTATION"],
     mutationFn: async (userData: TCreateUser) => await createUser(userData),
-    onSuccess: (data) => {
-      toast.success(data?.message);
-    },
     onError: (error) => {
       toast.error(error.message);
+    },
+    onSuccess: (data) => {
+      toast.success(data?.message);
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
     },
   });
 };
@@ -33,9 +38,6 @@ export const useUserSignIn = () => {
   return useMutation({
     mutationKey: ["USER_SIGNIN"],
     mutationFn: async (userData: TSignInUser) => await signInUser(userData),
-    onSuccess: (data) => {
-      toast.success(data?.message);
-    },
     onError: (error) => {
       toast.error(error?.message);
     },
@@ -47,9 +49,6 @@ export const useAddCategoryToSaller = () => {
     mutationKey: ["ADD_CATEGORY_SALLER"],
     mutationFn: async (userData: { name: string; status: string }[]) =>
       await addCategoryToSaller(userData),
-    onSuccess: (data) => {
-      toast.success(data?.message);
-    },
     onError: (error) => {
       toast.error(error?.message);
     },
@@ -61,9 +60,6 @@ export const useSendRequest = () => {
     mutationKey: ["ADD_CATEGORY_SALLER"],
     mutationFn: async (userData: { name: string; status: string }[]) =>
       await sendRequest(userData),
-    onSuccess: (data) => {
-      toast.success(data?.message);
-    },
     onError: (error) => {
       toast.error(error?.message);
     },
@@ -76,6 +72,11 @@ export const useSendDeadlineEmail = () => {
       await sendDeadlineEmail(payload),
     onSuccess: (data) => {
       toast.success(data?.message);
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
     },
     onError: (error) => {
       toast.error(error?.message);
@@ -89,6 +90,11 @@ export const useAcceptRequest = () => {
     mutationFn: async (payload: TSubscription) => await acceptRequest(payload),
     onSuccess: (data) => {
       toast.success(data?.message);
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
     },
     onError: (error) => {
       toast.error(error?.message);

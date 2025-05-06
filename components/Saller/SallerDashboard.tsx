@@ -8,6 +8,8 @@ const SallerDashboard = () => {
   const { data, isLoading } = useGetDashboardData();
   const { data: sallerInfo, isLoading: IsSallerLoading } =
     useGetCurrentSaller();
+  console.log({ sallerInfo });
+  console.log({ data });
   if (isLoading || IsSallerLoading) return <div>Loading...</div>;
 
   const todaysDate = new Date();
