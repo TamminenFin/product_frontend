@@ -55,9 +55,6 @@ const Navbar = () => {
   };
 
   const handleNavigate = () => {
-    if (user?.role === "admin") {
-      router.push("/admin");
-    }
     if (userInfo?.data?.status === "Pending") {
       setPendingModalOpen(true);
       return;
@@ -66,7 +63,7 @@ const Navbar = () => {
       setEndModalOpen(true);
       return;
     }
-    router.push(user?.role === "admin" ? "/admin" : "/dashboard");
+    router.push("/dashboard");
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,6 +144,12 @@ const Navbar = () => {
           >
             {translate.home.goToDashboard}
           </button>
+        ) : user?.role === "admin" ? (
+          <Link href={"/signin"}>
+            <button className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm">
+              {translate.home.goToLoginButton}
+            </button>
+          </Link>
         ) : (
           <Link href={"/signin"}>
             <button className="bg-purple-600 px-3 md:px-4 rounded-md py-2 md:py-2.5 text-white hover:bg-purple-700 text-[10px] md:text-sm">
