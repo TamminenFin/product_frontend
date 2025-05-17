@@ -4,6 +4,7 @@ import axiosInstance from "@/lib/axiosInstence";
 import { TCreateUser, TSignInUser, TSubscription } from "@/types";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
+import { FieldValues } from "react-hook-form";
 
 export const createUser = async (userData: TCreateUser) => {
   try {
@@ -189,6 +190,69 @@ export const dealeteASaller = async (payload: { sallerId: string }) => {
     const { data } = await axiosInstance.delete(
       `/auth/saller/remove/${payload.sallerId}`
     );
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const updateSallerProfile = async (payload: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.put(`/auth/saller/update`, payload);
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+export const updateSallerProfileByAdmin = async (payload: {
+  userData: FieldValues;
+  id: string;
+}) => {
+  try {
+    const { data } = await axiosInstance.put(
+      `/auth/saller/update/${payload.id}`,
+      payload.userData
+    );
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const getAllSallerNeedForNotify = async () => {
+  try {
+    const { data } = await axiosInstance.get(`/auth/saller/reminder`);
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const sendEmailForNotify = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.patch(`/auth/send-notify-email`, {
+      id,
+    });
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const forgotPassword = async (payload: { email: string }) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/forgot-password`, payload);
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+export const changePassword = async (payload: {
+  password: string;
+  token: string;
+}) => {
+  try {
+    const { data } = await axiosInstance.post(`/auth/change-password`, payload);
     return data;
   } catch (err: any) {
     return err?.response?.data;

@@ -5,10 +5,15 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { BiCategory, BiLogoProductHunt } from "react-icons/bi";
-import { MdDashboard, MdOutlineLogout } from "react-icons/md";
+import {
+  MdDashboard,
+  MdOutlineLogout,
+  MdOutlineAlternateEmail,
+} from "react-icons/md";
 import { TiStopwatch } from "react-icons/ti";
 import { FaCodePullRequest } from "react-icons/fa6";
 import translate from "@/utils/translate";
+import { PiCityBold } from "react-icons/pi";
 
 const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
   const { setIsLoading } = useUser();
@@ -94,6 +99,28 @@ const Navlinks = ({ onLinkClick }: { onLinkClick: () => void }) => {
         >
           <FaCodePullRequest className="h-5 w-5" />
           {translate.admin.routes.requests}
+        </Link>
+        <Link
+          href="/admin/citys"
+          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
+            "/admin/citys"
+          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
+          prefetch={false}
+          onClick={onLinkClick}
+        >
+          <PiCityBold className="h-5 w-5" />
+          Citys
+        </Link>
+        <Link
+          href="/admin/send-email"
+          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
+            "/admin/send-email"
+          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
+          prefetch={false}
+          onClick={onLinkClick}
+        >
+          <MdOutlineAlternateEmail className="h-5 w-5" />
+          Send Email
         </Link>
       </div>
       <button

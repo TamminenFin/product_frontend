@@ -13,12 +13,11 @@ import {
   Store,
   Tag,
   Loader,
-  LucideProps,
   Phone,
   Info,
+  LucideProps,
 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import { Citys } from "@/types/Citys";
 import {
   Select,
   SelectContent,
@@ -35,12 +34,14 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import translate from "@/utils/translate";
+import { useGetAllCity } from "@/hooks/city.hooks";
 
 const SignUpForm = () => {
   const { mutate: createUser, isPending } = useUserRegistation();
   const { setIsLoading } = useUser();
   const route = useRouter();
   const searchParams = useSearchParams();
+  const { data, isLoading } = useGetAllCity();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -56,18 +57,12 @@ const SignUpForm = () => {
     const address = formData.get("address") as string;
     const shopName = formData.get("shopName") as string;
     const shopId = formData.get("shopId") as string;
+    const showEmail = formData.get("showEmail") === "on"; // checkbox logic
 
     const params = searchParams.toString().split("=")[1];
-    let categoryLimit: string | number;
-    if (params == "5") {
-      categoryLimit = 5;
-    } else if (params == "10") {
-      categoryLimit = 10;
-    } else if (params == "unlimeted") {
-      categoryLimit = 1000;
-    } else {
-      categoryLimit = 5;
-    }
+    let categoryLimit: string | number = 5;
+    if (params === "10") categoryLimit = 10;
+    else if (params === "unlimeted") categoryLimit = 1000;
 
     createUser(
       {
@@ -80,7 +75,8 @@ const SignUpForm = () => {
         phone,
         city,
         postCode,
-        categoryLimit: categoryLimit,
+        showEmail, // Include in payload
+        categoryLimit,
       },
       {
         onSuccess: (data) => {
@@ -95,7 +91,6 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Name Input */}
       <InputField
         label={translate.signUp.fields.userName.label}
         id="name"
@@ -103,8 +98,6 @@ const SignUpForm = () => {
         icon={User}
         required
       />
-
-      {/* Email Input */}
       <InputField
         label={translate.signUp.fields.email.label}
         id="email"
@@ -113,8 +106,6 @@ const SignUpForm = () => {
         icon={Mail}
         required
       />
-
-      {/* Contact Input */}
       <InputField
         label={translate.signUp.fields.phone.label}
         id="phone"
@@ -123,8 +114,6 @@ const SignUpForm = () => {
         icon={Phone}
         required
       />
-
-      {/* Password Input */}
       <InputField
         label={translate.signUp.fields.password.label}
         id="password"
@@ -133,8 +122,6 @@ const SignUpForm = () => {
         icon={Lock}
         required
       />
-
-      {/* Address Input */}
       <InputField
         label={translate.signUp.fields.address.label}
         id="address"
@@ -146,30 +133,38 @@ const SignUpForm = () => {
       <div className="flex items-center gap-3 w-full">
         <div className="w-full">
           <Label>{translate.signUp.fields.city.label}</Label>
-          <Select name="city" required>
-            <SelectTrigger className="w-full">
-              <SelectValue
-                placeholder={translate.signUp.fields.city.placeholder}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>{translate.signUp.fields.city.label}</SelectLabel>
-                <ScrollArea className="h-52">
-                  {Citys.sort((a, b) => a.city.localeCompare(b.city)).map(
-                    (location, index) => (
-                      <SelectItem
-                        key={`${location} ${index}`}
-                        value={location.city}
-                      >
-                        {location.city}
-                      </SelectItem>
-                    )
-                  )}
-                </ScrollArea>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          {isLoading ? (
+            <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 animate-pulse rounded-md" />
+          ) : (
+            <Select name="city" required>
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={translate.signUp.fields.city.placeholder}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>
+                    {translate.signUp.fields.city.label}
+                  </SelectLabel>
+                  <ScrollArea className="h-52">
+                    {data?.data
+                      ?.sort((a: { name: string }, b: { name: string }) =>
+                        a.name.localeCompare(b.name)
+                      )
+                      ?.map((location: { name: string; _id: string }) => (
+                        <SelectItem
+                          key={`${location?._id}`}
+                          value={location.name}
+                        >
+                          {location.name}
+                        </SelectItem>
+                      ))}
+                  </ScrollArea>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         </div>
         <div className="w-full">
           <Label>{translate.signUp.fields.postalCode.label}</Label>
@@ -182,7 +177,6 @@ const SignUpForm = () => {
         </div>
       </div>
 
-      {/* Shop Name Input */}
       <InputField
         label={translate.signUp.fields.shopName.label}
         id="shopName"
@@ -190,8 +184,6 @@ const SignUpForm = () => {
         icon={Store}
         required
       />
-
-      {/* Shop ID Input */}
 
       <div className="relative">
         <div className="flex items-center gap-3">
@@ -212,7 +204,7 @@ const SignUpForm = () => {
         <div className="relative mt-1.5">
           <Tag className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
-            type={"text"}
+            type="text"
             id="shopId"
             name="shopId"
             placeholder={translate.signUp.fields.shopID.placeholder}
@@ -221,7 +213,17 @@ const SignUpForm = () => {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* ✅ Checkbox field */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          name="showEmail"
+          id="showEmail"
+          className="w-4 h-4"
+        />
+        <Label htmlFor="showEmail">Are you show the email address?</Label>
+      </div>
+
       <button
         type="submit"
         className={`w-full py-2 rounded-md text-white transition-colors ${

@@ -9,6 +9,7 @@ export type TCreateUser = {
   city: string;
   postCode: string;
   categoryLimit: string | number;
+  showEmail: boolean;
 };
 export type TSignInUser = {
   email: string;

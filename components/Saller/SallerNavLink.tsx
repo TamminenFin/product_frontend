@@ -7,6 +7,7 @@ import React from "react";
 import { BiLogoProductHunt } from "react-icons/bi";
 import { MdCategory, MdDashboard, MdOutlineLogout } from "react-icons/md";
 import { IoMdGitPullRequest } from "react-icons/io";
+import { ImProfile } from "react-icons/im";
 import translate from "@/utils/translate";
 
 const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
@@ -69,6 +70,17 @@ const SallerNavLink = ({ onLinkClick }: { onLinkClick: () => void }) => {
         >
           <IoMdGitPullRequest className="h-5 w-5" />
           {translate.sallerDashboard.routes.categoryRequest}
+        </Link>
+        <Link
+          href="/dashboard/profile"
+          className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium ${isActive(
+            "/dashboard/profile"
+          )} hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-gray-50`}
+          prefetch={false}
+          onClick={onLinkClick}
+        >
+          <ImProfile className="h-5 w-5" />
+          Cuenta
         </Link>
       </div>
       <button

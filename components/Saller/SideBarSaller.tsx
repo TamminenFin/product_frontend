@@ -4,6 +4,7 @@ import SallerNavLink from "@/components/Saller/SallerNavLink";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
+
 import Link from "next/link";
 import logo from "../../assets/lastiendas_logo.png";
 import Image from "next/image";

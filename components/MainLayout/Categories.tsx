@@ -41,24 +41,23 @@ const Categories = ({ category }: { category: TCategory[] }) => {
           <ChevronLeft size={12} className="md:hidden block" />
         </button>
 
-        {/* Categories Container with overflow hidden */}
+        {/* Fixed "All" Button */}
+        <div
+          onClick={() => handleCategoryClick("")}
+          className={`flex-shrink-0 px-4 py-2 rounded-md text-xs sm:text-sm font-medium cursor-pointer whitespace-nowrap ${
+            selectedCategory === ""
+              ? "bg-purple-600 text-white"
+              : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+          }`}
+        >
+          Todo
+        </div>
+
+        {/* Scrollable Categories */}
         <div
           ref={scrollRef}
           className="flex overflow-x-auto gap-3 scrollbar-hide px-2 py-1 w-full"
         >
-          {/* All Categories Button */}
-          <div
-            onClick={() => handleCategoryClick("")}
-            className={`flex-shrink-0 px-4 py-2 rounded-md text-xs sm:text-sm font-medium cursor-pointer whitespace-nowrap ${
-              selectedCategory === ""
-                ? "bg-purple-600 text-white"
-                : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-          >
-            All
-          </div>
-
-          {/* Category Buttons */}
           {category
             ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
             ?.map((cat: TCategory) => (

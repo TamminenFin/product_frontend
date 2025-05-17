@@ -7,6 +7,8 @@ import React from "react";
 const ProductDetails = async ({ params }: { params: { id: string } }) => {
   const data = await getSingleProduct(params?.id);
 
+  console.log(data);
+
   return (
     <div className="max-w-5xl mx-auto py-8 px-4">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -34,7 +36,10 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
           </div>
 
           <div className="text-xl sm:text-2xl font-semibold text-gray-800 mt-4">
-            S/‎{data?.data?.price}{" "}
+            S/‎
+            {data?.data?.price === 0
+              ? "Consultar Precio"
+              : data?.data?.price}{" "}
             {data?.data?.priceType === "Per Hour"
               ? "por hora"
               : data?.data?.priceType === "Par Day"
@@ -50,6 +55,19 @@ const ProductDetails = async ({ params }: { params: { id: string } }) => {
               <span className="text-gray-700">{data?.data?.location}</span>
             </div>
           </div>
+
+          {data?.data?.sallerId?.showEmail === true && (
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center space-x-4">
+                <span className="text-sm sm:text-base text-gray-500">
+                  Saller Email :
+                </span>
+                <span className="text-gray-700">
+                  {data?.data?.sallerId?.email}
+                </span>
+              </div>
+            </div>
+          )}
           <div className="mt-3 space-y-4">
             <div className="flex items-center space-x-4">
               <span className="text-sm sm:text-base text-gray-500">

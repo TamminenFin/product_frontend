@@ -10,11 +10,12 @@ import Link from "next/link";
 import { useGetCurrentSaller } from "@/hooks/auth.hooks";
 import PendingUserModel from "../model/PendingUserModel";
 import SubscriptionEndMessage from "../model/SubscriptionEndMessage";
-import { Citys } from "@/types/Citys";
 import { MultiValue } from "react-select";
 import Select from "react-select";
 import translate from "@/utils/translate";
 import Logo from "../../assets/lastiendas_logo.png";
+import { useGetAllCity } from "@/hooks/city.hooks";
+import { cn } from "@/lib/utils";
 
 type OptionType = {
   value: string;
@@ -23,31 +24,27 @@ type OptionType = {
 
 const Navbar = () => {
   const { user } = useUser();
-  const { data: userInfo } = useGetCurrentSaller(user?._id as string);
+  const { data, isLoading } = useGetAllCity();
+  const { data: userInfo } = useGetCurrentSaller(user?._id as string, {
+    enabled: !!user?._id,
+  });
   const router = useRouter();
   const searchParams = useSearchParams();
   const [pendingModalOpen, setPendingModalOpen] = useState(false);
   const [endModalOpen, setEndModalOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
-
   const selectedLocations = searchParams.getAll("location[]") || [];
 
-  // Handle location change
   const handleLocationChange = (selectedOptions: MultiValue<OptionType>) => {
     const params = new URLSearchParams(searchParams.toString());
-
-    // Remove existing location params
     params.delete("location[]");
-
     selectedOptions.forEach((option) => {
       params.append("location[]", option.value);
     });
-
     router.push(`?${params.toString()}`);
   };
 
-  // Navigate to the dashboard or show appropriate modal if conditions are met
   const handleNavigate = () => {
     if (userInfo?.data?.status === "Pending") {
       setPendingModalOpen(true);
@@ -60,53 +57,60 @@ const Navbar = () => {
     router.push(user?.role === "admin" ? "/admin" : "/dashboard");
   };
 
-  // Update the search term and searchParams in URL
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
     setSearchTerm(value);
   };
 
-  // Update the searchParams in the URL based on searchTerm
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
-
     if (searchTerm) {
       params.set("searchTerms", searchTerm);
     } else {
       params.delete("searchTerms");
     }
-
-    // Update the URL with the search term
     router.push(`?${params.toString()}`);
-  }, [searchTerm, searchParams, router]);
+  }, [router, searchParams, searchTerm]);
 
-  const locationOptions = Citys.map((city) => ({
-    value: city.city,
-    label: city.city,
-  })).sort((a, b) => a.value.localeCompare(b.value));
+  const locationOptions: OptionType[] =
+    data?.data
+      ?.map((city: { name: string }) => ({
+        value: city.name,
+        label: city.name,
+      }))
+      .sort((a: { name: string }, b: { name: string }) =>
+        a.name.localeCompare(b.name)
+      ) || [];
 
   return (
-    <nav className="">
+    <nav>
       <div className="flex flex-wrap gap-4 items-center justify-between">
         <Link href="/">
           <Image src={Logo} alt="Logo" width={140} height={40} />
         </Link>
 
-        {/* Location Dropdown */}
-        <div className="hidden sm:block">
-          <Select
-            options={locationOptions}
-            isMulti
-            value={locationOptions.filter((option) =>
-              selectedLocations.includes(option.value)
-            )}
-            onChange={handleLocationChange}
-            placeholder="Select Location"
-            className="w-60 text-[12px]"
-          />
+        {/* Desktop Location Dropdown */}
+        <div className="hidden sm:block w-60 text-xs">
+          {isLoading ? (
+            <div
+              className={cn(
+                "animate-pulse h-10 w-full rounded-md bg-gray-200 dark:bg-gray-700"
+              )}
+            />
+          ) : (
+            <Select
+              options={locationOptions}
+              isMulti
+              value={locationOptions.filter((option) =>
+                selectedLocations.includes(option.value)
+              )}
+              onChange={handleLocationChange}
+              placeholder="Select Location"
+            />
+          )}
         </div>
 
-        {/* Search Input */}
+        {/* Desktop Search Input */}
         <div className="hidden sm:block flex-1">
           <div className="relative">
             <Input
@@ -123,7 +127,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Be a Seller Button */}
+        {/* Auth Button */}
         {user?.email ? (
           <button
             onClick={handleNavigate}
@@ -139,18 +143,27 @@ const Navbar = () => {
           </Link>
         )}
 
-        {/* Mobile Search and Location Dropdown */}
+        {/* Mobile Section */}
         <div className="flex flex-col items-center gap-2 w-full sm:hidden">
-          <Select
-            options={locationOptions}
-            isMulti
-            value={locationOptions.filter((option) =>
-              selectedLocations.includes(option.value)
-            )}
-            onChange={handleLocationChange}
-            placeholder={translate.home.selectCity}
-            className="text-[10px] w-full"
-          />
+          {isLoading ? (
+            <div
+              className={cn(
+                "animate-pulse h-9 w-full rounded-md bg-gray-200 dark:bg-gray-700"
+              )}
+            />
+          ) : (
+            <Select
+              options={locationOptions}
+              isMulti
+              value={locationOptions.filter((option) =>
+                selectedLocations.includes(option.value)
+              )}
+              onChange={handleLocationChange}
+              placeholder={translate.home.selectCity}
+              className="text-[10px] w-full"
+            />
+          )}
+
           <div className="relative w-full">
             <input
               type="text"
@@ -167,6 +180,7 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Modals */}
       <PendingUserModel
         isOpen={pendingModalOpen}
         setIsOpen={setPendingModalOpen}

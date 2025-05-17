@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   createProduct,
   deleteProduct,
   getAllProduct,
+  getProductDetailsWithSallerInfo,
   getSallerProduct,
   getSearchProduct,
   getSingleProduct,
   updateProduct,
 } from "@/services/product.services";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { DateRange } from "react-day-picker";
 import { toast } from "sonner";
 
 export const useCreateProduct = () => {
@@ -91,5 +92,12 @@ export const useGetSallerProduct = (id: string) => {
   return useQuery({
     queryKey: ["SEARCH_PRODUCT", id],
     queryFn: async () => await getSallerProduct(id),
+  });
+};
+
+export const useGetProductSDetailsWithSallerInfo = (id: string) => {
+  return useQuery({
+    queryKey: ["GET)_PRODUCT_DETAILS_WITH_SALLER_DATA", id],
+    queryFn: async () => await getProductDetailsWithSallerInfo(id),
   });
 };

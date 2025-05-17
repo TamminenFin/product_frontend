@@ -12,7 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Edit, Trash } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,43 +23,39 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useDeleteProduct, useGetSallerProduct } from "@/hooks/product.hooks";
 import { Input } from "../ui/input";
-import { TProduct } from "@/types";
-import DeleteConfirmationModal from "../model/DeleteConfirmationModal";
-import Image from "next/image";
+import { TSaller } from "@/types";
+import {
+  useGetAllSallerNeedNotify,
+  useSendEmailForNotity,
+} from "@/hooks/auth.hooks";
 import translate from "@/utils/translate";
-import Link from "next/link";
+import { MdEmail } from "react-icons/md";
+import { toast } from "sonner";
 
-type SelectedItemType = { name: string; _id: string } | null;
-
-function SallerProducts({ id }: { id: string }) {
-  const { data, isLoading, refetch } = useGetSallerProduct(id);
+function NotifySallers() {
+  const { data, isLoading, refetch } = useGetAllSallerNeedNotify();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedItem, setSelctedItem] = useState<SelectedItemType>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const { mutate: deleteProduct } = useDeleteProduct();
+  const { mutate, isPending } = useSendEmailForNotity();
 
-  const handleDelete = () => {
-    if (selectedItem) {
-      deleteProduct(selectedItem?._id, {
-        onSuccess: () => {
+  const handleSendEmail = (id: string) => {
+    mutate(id, {
+      onSuccess: (data) => {
+        console.log(data);
+        if (data?.success) {
+          toast.success(data?.message);
           refetch();
-          setIsOpen(false);
-        },
-      });
-    }
+        } else {
+          toast.error(data?.message);
+        }
+      },
+    });
   };
 
-  const handleModelOpen = (item: { name: string; _id: string }) => {
-    setSelctedItem(item);
-    setIsOpen(true);
-  };
-
-  const columns: ColumnDef<TProduct>[] = [
+  const columns: ColumnDef<TSaller>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => {
@@ -68,7 +64,7 @@ function SallerProducts({ id }: { id: string }) {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {translate.admin.sallerProductPage.tableHeadings.name}
+            {translate.admin.sallers.tableHeadings.name}
             <ArrowUpDown />
           </Button>
         );
@@ -76,116 +72,79 @@ function SallerProducts({ id }: { id: string }) {
       cell: ({ row }) => <div className="ml-3">{row.getValue("name")}</div>,
     },
     {
-      accessorKey: "image",
-      header: ({}) => {
-        return <p> {translate.admin.sallerProductPage.tableHeadings.image}</p>;
-      },
-      cell: ({ row }) => (
-        <div className="ml-3">
-          <Image
-            src={row.getValue("image")}
-            width={50}
-            height={50}
-            alt=""
-            className="w-12 h-12 object-cover"
-          />
-        </div>
-      ),
-    },
-    {
-      accessorKey: "location",
+      accessorKey: "email",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {translate.admin.sallerProductPage.tableHeadings.location}
+            {translate.admin.sallers.tableHeadings.email}
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => <div className="ml-3">{row.getValue("location")}</div>,
+      cell: ({ row }) => <div className="ml-3">{row.getValue("email")}</div>,
     },
     {
-      accessorKey: "category",
+      accessorKey: "Contact",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {translate.admin.sallerProductPage.tableHeadings.category}
+            {translate.admin.sallers.tableHeadings.contact}
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="ml-3">
-          {row?.original?.category?.map((cat, idx) => (
-            <p key={idx}>{cat.name},</p>
-          ))}
-        </div>
-      ),
+      cell: ({ row }) => <div className="ml-3">{row.original.phone}</div>,
     },
     {
-      accessorKey: "price",
+      accessorKey: "subEndDate",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            {translate.admin.sallerProductPage.tableHeadings.price}
+            End In
             <ArrowUpDown />
           </Button>
         );
       },
-      cell: ({ row }) => <div className="ml-3">{row.getValue("price")}</div>,
+      cell: ({ row }) => {
+        const endDate = new Date(row.getValue("subEndDate"));
+        const now = new Date();
+        const timeDiff = endDate.getTime() - now.getTime();
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        return <div>{daysLeft} days</div>;
+      },
     },
+
     {
-      accessorKey: "Saller Name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {translate.admin.sallerProductPage.tableHeadings.sallerName}
-            <ArrowUpDown />
-          </Button>
-        );
+      accessorKey: "subEndDate3",
+      header: () => {
+        return <Button variant="ghost">End Date</Button>;
       },
-      cell: ({ row }) => (
-        <div className="ml-3">{row.original?.sallerId?.name}</div>
-      ),
+      cell: ({ row }) => <div className="">{row.getValue("subEndDate")}</div>,
     },
     {
       id: "actions",
-      header: `${translate.admin.sallerProductPage.tableHeadings.action}`,
+      header: `${translate.admin.sallers.tableHeadings.action}`,
       enableHiding: false,
       cell: ({ row }) => {
         return (
           <div className="isolate flex -space-x-px">
-            <Link href={`/admin/products/${row.original?._id}`}>
-              <Button
-                variant="outline"
-                className="rounded-r-none text-black focus:z-10"
-              >
-                <Edit />
-              </Button>
-            </Link>
             <Button
-              onClick={() =>
-                handleModelOpen({
-                  name: row.original?.name,
-                  _id: row?.original?._id,
-                })
-              }
+              disabled={isPending}
+              onClick={() => handleSendEmail(row.original?._id)}
               variant="outline"
-              className="rounded-l-none focus:z-10"
+              size="sm"
             >
-              <Trash />
+              Send <MdEmail />
             </Button>
           </div>
         );
@@ -213,28 +172,25 @@ function SallerProducts({ id }: { id: string }) {
   });
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="h-screen bg-black/10 fixed inset-0 z-[999] backdrop-blur-md flex justify-center items-center">
+        <div className="w-16 h-16 border-4 border-t-transparent border-purple-600 rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl font-semibold">
-        {translate.admin.sallerProductPage.heading}{" "}
-      </h1>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
+      <h1 className="text-2xl font-semibold">Notify Sallers</h1>
+      <div className="flex flex-row gap-3 justify-between py-4">
         <Input
-          placeholder={translate.admin.sallerProductPage.searchPlaceholder}
-          value={(table?.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder={translate.admin.sallers.searchPlaceholder}
+          value={(table?.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table?.getColumn("name")?.setFilterValue(event.target.value)
+            table?.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <Link href={`/admin/sallers/${id}/edit`}>
-          <Button className="bg-indigo-600 hover:bg-indigo-500">
-            Edit Info
-          </Button>
-        </Link>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -294,7 +250,7 @@ function SallerProducts({ id }: { id: string }) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {translate.admin.sallers.buttons.previous}
           </Button>
           <Button
             variant="outline"
@@ -302,18 +258,12 @@ function SallerProducts({ id }: { id: string }) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {translate.admin.sallers.buttons.next}
           </Button>
         </div>
       </div>
-      <DeleteConfirmationModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        handleDelete={handleDelete}
-        itemName={selectedItem?.name || ""}
-      />
     </div>
   );
 }
 
-export default SallerProducts;
+export default NotifySallers;

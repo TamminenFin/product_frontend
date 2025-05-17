@@ -196,23 +196,58 @@ function AllProduct({ isAdmin = false }: { isAdmin?: boolean }) {
   }
 
   if (isAdmin) {
-    columns.push({
-      accessorKey: "Saller Name",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            {translate.admin.allProductPage.tableHeadings.sallerName}
-            <ArrowUpDown />
-          </Button>
-        );
+    columns.push(
+      {
+        accessorKey: "Saller Name",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              {translate.admin.allProductPage.tableHeadings.sallerName}
+              <ArrowUpDown />
+            </Button>
+          );
+        },
+        cell: ({ row }) => (
+          <div className="ml-3">{row.original?.sallerId?.name}</div>
+        ),
       },
-      cell: ({ row }) => (
-        <div className="ml-3">{row.original?.sallerId?.name}</div>
-      ),
-    });
+      {
+        id: "actions",
+        header: `${translate.admin.allProductPage.tableHeadings.action}`,
+        enableHiding: false,
+        cell: ({ row }) => {
+          return (
+            <div className="isolate flex -space-x-px">
+              <Link href={`/admin/products/${row.original?._id}`}>
+                <Button
+                  variant="outline"
+                  className="rounded-r-none text-black focus:z-10"
+                >
+                  <Edit />
+                </Button>
+              </Link>
+              <Button
+                onClick={() =>
+                  handleModelOpen({
+                    name: row.original?.name,
+                    _id: row?.original?._id,
+                  })
+                }
+                variant="outline"
+                className="text-black rounded-l-none focus:z-10"
+              >
+                <Trash />
+              </Button>
+            </div>
+          );
+        },
+      }
+    );
   }
 
   const table = useReactTable({

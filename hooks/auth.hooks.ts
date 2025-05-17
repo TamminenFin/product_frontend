@@ -2,18 +2,25 @@ import {
   acceptRequest,
   addCategoryToSaller,
   addTransactionId,
+  changePassword,
   createUser,
   dealeteASaller,
+  forgotPassword,
   getAllRequestForSallers,
+  getAllSallerNeedForNotify,
   getAllSallers,
   getCurrentSaller,
   getDeadlineComingSallers,
   sendDeadlineEmail,
+  sendEmailForNotify,
   sendRequest,
   signInUser,
+  updateSallerProfile,
+  updateSallerProfileByAdmin,
 } from "@/services/auth.services";
 import { TCreateUser, TSignInUser, TSubscription } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
 export const useUserRegistation = () => {
@@ -161,5 +168,58 @@ export const useRemoveSaller = () => {
         });
       }
     },
+  });
+};
+
+export const useUpdateSallerProfile = () => {
+  return useMutation({
+    mutationKey: ["UPDATE_SALLER_PROFILE"],
+    mutationFn: async (userData: FieldValues) =>
+      await updateSallerProfile(userData),
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+};
+export const useUpdateSallerProfileByAdmin = () => {
+  return useMutation({
+    mutationKey: ["UPDATE_SALLER_PROFILE_BY_ADMIN"],
+    mutationFn: async (payload: { userData: FieldValues; id: string }) =>
+      await updateSallerProfileByAdmin(payload),
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+};
+
+export const useGetAllSallerNeedNotify = () => {
+  return useQuery({
+    queryKey: ["GET_ALL_SALLER_THOSE_NEED_TO_TOTIFY"],
+    queryFn: async () => await getAllSallerNeedForNotify(),
+  });
+};
+
+export const useSendEmailForNotity = () => {
+  return useMutation({
+    mutationKey: ["SEND_EMAIL_FOR_NOTIFY"],
+    mutationFn: async (id: string) => await sendEmailForNotify(id),
+    onError: (error) => {
+      toast.error(error?.message);
+    },
+  });
+};
+
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationKey: ["FORGOT_PASSWORD"],
+    mutationFn: async (payload: { email: string }) =>
+      await forgotPassword(payload),
+  });
+};
+export const useChangePassword = () => {
+  return useMutation({
+    mutationKey: ["CHANGE_PASSWORD"],
+    mutationFn: async (payload: { password: string; token: string }) =>
+      await changePassword(payload),
   });
 };

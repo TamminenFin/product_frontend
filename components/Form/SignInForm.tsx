@@ -6,6 +6,7 @@ import { useUserSignIn } from "@/hooks/auth.hooks";
 import { useUser } from "@/lib/user.provider";
 import { useRouter } from "next/navigation";
 import translate from "@/utils/translate";
+import { toast } from "sonner";
 
 const SignInForm = () => {
   const { mutate: signInUser } = useUserSignIn();
@@ -27,11 +28,18 @@ const SignInForm = () => {
           if (data?.success) {
             setIsLoading(true);
             route.push("/");
+          } else {
+            toast.error(data?.message);
           }
         },
       }
     );
   };
+
+  const handleForgotPassword = () => {
+    route.push("/forgot-password");
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -48,7 +56,7 @@ const SignInForm = () => {
             required
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-2">
           <Label
             htmlFor="password"
             className="text-gray-700 dark:text-gray-300"
@@ -63,6 +71,15 @@ const SignInForm = () => {
             className="mt-1 p-3 border border-gray-300 rounded-lg w-full focus:ring-2 focus:ring-purple-500 focus:outline-none"
             required
           />
+        </div>
+        <div className="mb-6 text-right">
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            className="text-sm text-purple-600 hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </button>
         </div>
         <button
           type="submit"

@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 import axiosInstance from "@/lib/axiosInstence";
-import { DateRange } from "react-day-picker";
 
 export const createProduct = async (payload: FormData) => {
   try {
@@ -78,6 +78,15 @@ export const getSearchProduct = async (
 export const getSallerProduct = async (id: string) => {
   try {
     const { data } = await axiosInstance.get(`/product/saller/${id}`);
+    return data;
+  } catch (err: any) {
+    return err?.response?.data;
+  }
+};
+
+export const getProductDetailsWithSallerInfo = async (id: string) => {
+  try {
+    const { data } = await axiosInstance.get(`/product/product-details/${id}`);
     return data;
   } catch (err: any) {
     return err?.response?.data;
