@@ -68,7 +68,9 @@ const MyCategory = () => {
       <div>
         <div className="flex items-center justify-center flex-wrap gap-3">
           {data?.data
-            ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+            ?.sort((a: TCategory, b: TCategory) =>
+              a?.name?.localeCompare(b?.name)
+            )
             ?.map((category: TCategory) => (
               <div
                 className={`text-xs md:text-base font-medium cursor-pointer rounded-full ${

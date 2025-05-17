@@ -88,7 +88,7 @@ const Navbar = () => {
         label: city.name,
       }))
       .sort((a: { name: string }, b: { name: string }) =>
-        a.name.localeCompare(b.name)
+        a?.name?.localeCompare(b?.name)
       ) || [];
 
   return (

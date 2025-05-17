@@ -67,7 +67,9 @@ const RequestForCategory = () => {
       {/* Category List */}
       <div className="flex items-center justify-center flex-wrap gap-3">
         {data?.data
-          ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+          ?.sort((a: TCategory, b: TCategory) =>
+            a?.name?.localeCompare(b?.name)
+          )
           ?.map((category: TCategory) => (
             <div
               key={category?._id}

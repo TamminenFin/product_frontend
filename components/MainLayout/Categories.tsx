@@ -59,7 +59,9 @@ const Categories = ({ category }: { category: TCategory[] }) => {
           className="flex overflow-x-auto gap-3 scrollbar-hide px-2 py-1 w-full"
         >
           {category
-            ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+            ?.sort((a: TCategory, b: TCategory) =>
+              a?.name?.localeCompare(b?.name)
+            )
             ?.map((cat: TCategory) => (
               <div
                 key={cat?._id}

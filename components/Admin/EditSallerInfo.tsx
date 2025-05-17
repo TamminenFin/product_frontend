@@ -178,7 +178,7 @@ export default function EditSallerInfo() {
                     <ScrollArea className="h-52">
                       {city?.data
                         ?.sort((a: { name: string }, b: { name: string }) =>
-                          a.name.localeCompare(b.name)
+                          a?.name?.localeCompare(b?.name)
                         )
                         .map((location: { name: string; _id: string }) => (
                           <SelectItem key={location._id} value={location.name}>

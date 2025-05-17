@@ -161,7 +161,7 @@ const SignUpForm = () => {
                   <ScrollArea className="h-52">
                     {data?.data
                       ?.sort((a: { name: string }, b: { name: string }) =>
-                        a.name.localeCompare(b.name)
+                        a?.name?.localeCompare(b?.name)
                       )
                       ?.map((location: { name: string; _id: string }) => (
                         <SelectItem

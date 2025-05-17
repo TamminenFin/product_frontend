@@ -77,7 +77,9 @@ const Category = () => {
       <Separator className="my-4" />
       <div className="flex items-center flex-wrap justify-center gap-4">
         {data?.data
-          ?.sort((a: TCategory, b: TCategory) => a.name.localeCompare(b.name))
+          ?.sort((a: TCategory, b: TCategory) =>
+            a?.name?.localeCompare(b?.name)
+          )
           ?.map((category: TCategory) => (
             <div
               key={category?._id}
