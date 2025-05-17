@@ -55,6 +55,9 @@ const Navbar = () => {
   };
 
   const handleNavigate = () => {
+    if (user?.role === "admin") {
+      router.push("/admin");
+    }
     if (userInfo?.data?.status === "Pending") {
       setPendingModalOpen(true);
       return;
