@@ -37,6 +37,5 @@ export const useGetAllCity = () => {
   return useQuery({
     queryKey: ["GET_ALL_CITY"],
     queryFn: async () => await getAllCity(),
-    staleTime: 1000 * 60 * 10, // 10 minutes
   });
 };

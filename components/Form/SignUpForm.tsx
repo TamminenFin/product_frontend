@@ -89,6 +89,8 @@ const SignUpForm = () => {
     );
   };
 
+  console.log(data);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <InputField
