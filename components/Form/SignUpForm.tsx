@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useUserRegistation } from "@/hooks/auth.hooks";
@@ -41,7 +41,16 @@ const SignUpForm = () => {
   const { setIsLoading } = useUser();
   const route = useRouter();
   const searchParams = useSearchParams();
-  const { data, isLoading } = useGetAllCity();
+  const [isClient, setIsClient] = useState(false);
+
+  // This ensures hooks dependent on browser-only APIs are safe
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const { data, isLoading } = useGetAllCity({
+    enabled: isClient, // fetch only after client is mounted
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

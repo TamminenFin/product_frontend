@@ -33,9 +33,10 @@ export const useRemoveCity = () => {
   });
 };
 
-export const useGetAllCity = () => {
+export const useGetAllCity = (options = {}) => {
   return useQuery({
-    queryKey: ["GET_ALL_CITY"],
+    queryKey: ["GET_ALL_CITY_FROM_DB"],
     queryFn: async () => await getAllCity(),
+    ...options,
   });
 };

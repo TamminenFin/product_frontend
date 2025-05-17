@@ -32,7 +32,7 @@ export const removeCity = async (id: string) => {
 
 export const getAllCity = async () => {
   try {
-    const { data } = await axiosInstance.get(`/city/`);
+    const { data } = await axiosInstance.get(`/city`);
     return data;
   } catch (err: any) {
     return err?.response?.data;

@@ -24,7 +24,16 @@ type OptionType = {
 
 const Navbar = () => {
   const { user } = useUser();
-  const { data, isLoading } = useGetAllCity();
+  const [isClient, setIsClient] = useState(false);
+
+  // This ensures hooks dependent on browser-only APIs are safe
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const { data, isLoading } = useGetAllCity({
+    enabled: isClient, // fetch only after client is mounted
+  });
   const { data: userInfo } = useGetCurrentSaller(user?._id as string, {
     enabled: !!user?._id,
   });
