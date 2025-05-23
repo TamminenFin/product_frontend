@@ -62,7 +62,7 @@ const EditProduct = () => {
       JSON.stringify({ name, price, category, description })
     );
 
-    const payload = { formData, id: data?.data?._id };
+    const payload = { formData, id: id as string };
 
     updateProduct(payload, {
       onSuccess: (data) => {

@@ -37,7 +37,7 @@ type FormData = {
   shopName: string;
   shopId: string;
   phone: string;
-  postalCode: string;
+  postCode: string;
 };
 
 export default function UpdateProfile() {
@@ -48,6 +48,8 @@ export default function UpdateProfile() {
   const { data, isLoading } = useGetCurrentSaller(user?._id ?? "", {
     enabled: !!user?._id,
   });
+
+  console.log(data);
 
   const {
     register,
@@ -205,10 +207,10 @@ export default function UpdateProfile() {
               {translate.signUp.fields.postalCode.label}
             </Label>
             <Input
-              id="postalCode"
-              {...register("postalCode", { required: true })}
+              id="postCode"
+              {...register("postCode", { required: true })}
             />
-            {errors.postalCode && (
+            {errors.postCode && (
               <p className="text-sm text-red-500">Postal Code is required</p>
             )}
           </div>
