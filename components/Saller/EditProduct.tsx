@@ -42,13 +42,13 @@ const EditProduct = ({ id }: { id: string }) => {
 
   const handelEditProduct = (e: FormEvent) => {
     e.preventDefault();
-    const loadingToast = toast.loading("Please wait, product is updating...");
+    const loadingToast = toast.loading("Por favor espere, el producto se está actualizando...");
     const formElement = e.target as HTMLFormElement;
     const formData = new FormData(formElement);
 
-    const name = formData.get("name") as string;
-    const price = formData.get("price") as string;
-    const description = formData.get("description") as string;
+    const name = formData.get("nombre") as string;
+    const price = formData.get("precio") as string;
+    const description = formData.get("descripción") as string;
 
     const category = selectedCategory.map((cat) => ({
       name: cat.value,
