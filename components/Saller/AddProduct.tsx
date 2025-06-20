@@ -39,11 +39,11 @@ const AddProduct = () => {
 
     // Check for image before showing loading toast
     if (!image) {
-      return toast.error("Please upload a product image.");
+      return toast.error("Sube una imagen del producto.");
     }
 
     const loadingToast = toast.loading(
-      "Please wait, product is being created..."
+      "Por favor espere, el producto está siendo creado..."
     );
 
     const formElement = e.target as HTMLFormElement;
@@ -73,15 +73,15 @@ const AddProduct = () => {
       onSuccess: (data) => {
         toast.dismiss(loadingToast);
         if (data?.success) {
-          toast.success("Product created successfully!");
+          toast.success("¡Producto creado exitosamente!");
           route.push("/dashboard/product");
         } else {
-          toast.error("Something went wrong. Please try again.");
+          toast.error("Algo salió mal. Inténtalo de nuevo.");
         }
       },
       onError: (err) => {
         toast.dismiss(loadingToast);
-        toast.error("Failed to create product. Please try again.");
+        toast.error("No se pudo crear el producto. Inténtalo de nuevo.");
         console.error(err);
       },
     });
@@ -176,7 +176,7 @@ const AddProduct = () => {
           </Label>
           <Textarea
             required
-            name="description"
+            name="descripción"
             className="mt-1 resize-none mb-2 border-gray-300"
             rows={7}
           />
