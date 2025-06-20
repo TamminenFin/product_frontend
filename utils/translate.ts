@@ -3,7 +3,7 @@ const translate = {
     logo: "Logo",
     goToLoginButton: "Registrarse como vendedor",
     goToDashboard: "Panel de Control",
-    footerText: "Las Tiendas. All rights reserved.",
+    footerText: "Las Tiendas. Reservados todos los derechos.",
     searchPlaceholder: "Buscar...",
     selectCity: "Seleccionar Ubicación",
   },
@@ -23,7 +23,7 @@ const translate = {
     },
     emailPlaceholder: "Ingrese su Correo",
     buttonText: "Ingresar",
-    footertitle: "NO tiene  una cuenta?",
+    footertitle: "No tiene  una cuenta?",
     footerButtonText: "Registrarse",
   },
   signUp: {
@@ -70,7 +70,7 @@ const translate = {
     },
     button: "Sign Up",
     footer: {
-      text: "Already have an account?",
+      text: "¿Ya tienes una cuenta?",
       link: "Login",
     },
   },
@@ -88,7 +88,7 @@ const translate = {
     routes: {
       dashboard: "Dashboard",
       categories: "Categories",
-      sallers: "Sallers",
+      sallers: "Sellers",
       products: "Products",
       subscriptionCheck: "Subscription-Check",
       requests: "Requests",
@@ -97,7 +97,7 @@ const translate = {
     statisticPage: {
       totalProduct: "Total Product",
       totalCategory: "Total Category",
-      totalSaller: "Total Saller",
+      totalSaller: "Total Seller",
     },
     categoriesPage: {
       heading: "All Category",
@@ -120,7 +120,7 @@ const translate = {
       },
     },
     sallers: {
-      heading: "Sallers",
+      heading: "Sellers",
       searchPlaceholder: "Filter Email...",
       tableHeadings: {
         name: "Name",
@@ -148,7 +148,7 @@ const translate = {
       },
     },
     sallerProductPage: {
-      heading: "Saller Products",
+      heading: "Seller Products",
       searchPlaceholder: "Filter Product...",
       tableHeadings: {
         name: "Name",
