@@ -176,7 +176,7 @@ const AddProduct = () => {
           </Label>
           <Textarea
             required
-            name="descripción"
+            name="description"
             className="mt-1 resize-none mb-2 border-gray-300"
             rows={7}
           />
