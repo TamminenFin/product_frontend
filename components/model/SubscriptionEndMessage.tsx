@@ -26,10 +26,9 @@ const SubscriptionEndMessage = ({ isOpen, setIsOpen }: Props) => {
             Subscription Ended
           </DialogTitle>
           <DialogDescription className="text-center text-sm text-gray-600 mt-2">
-            Your subscription has expired. To continue enjoying our services,
-            please renew your subscription. For assistance or to renew, contact
-            us at <strong>+8801615718970</strong>. Thank you for being a valued
-            member of our community.
+            Su suscripción ha expirado. Para seguir disfrutando de nuestros servicios, 
+            renueve su suscripción. Para obtener ayuda o renovarla, contáctenos en 
+            <strong>lastiendas65@gmail.com</strong>. 
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
